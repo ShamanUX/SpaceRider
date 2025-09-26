@@ -1,0 +1,94 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SpaceShipMovement : MonoBehaviour
+{
+    [Header("Movement Settings")]
+    public float thrustForce = 5f;
+    public float rotationSpeed = 180f;
+    public float maxVelocity = 10f;
+    public float dragInSpace = 0.5f;
+
+    [Header("Visual Effects")]
+    public ParticleSystem thrustParticles;
+
+    private Rigidbody2D rb;
+    private bool isThrusting = false;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        rb.drag = dragInSpace; // Small drag to prevent infinite movement
+    }
+
+    void Update()
+    {
+        HandleInput();
+        HandleThrustEffects();
+    }
+
+    void HandleInput()
+    {
+        // Rotation with A/D or Left/Right arrows
+        float rotation = 0f;
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            rotation = 1f;
+        }
+        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            rotation = -1f;
+        }
+
+        // Apply rotation
+        transform.Rotate(0, 0, rotation * rotationSpeed * Time.deltaTime);
+
+        // Thrust with W/Up arrow
+        isThrusting = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+    }
+
+    void FixedUpdate()
+    {
+        if (isThrusting)
+        {
+            // Apply thrust in the direction the ship is facing
+            Vector2 thrustDirection = transform.up; // In 2D, up is the forward direction
+            rb.AddForce(thrustDirection * thrustForce, ForceMode2D.Force);
+
+            // Limit maximum velocity
+            if (rb.velocity.magnitude > maxVelocity)
+            {
+                rb.velocity = rb.velocity.normalized * maxVelocity;
+            }
+        }
+    }
+
+    void HandleThrustEffects()
+    {
+        // Control thrust particle effects
+        if (thrustParticles != null)
+        {
+            if (isThrusting && !thrustParticles.isPlaying)
+            {
+                thrustParticles.Play();
+            }
+            else if (!isThrusting && thrustParticles.isPlaying)
+            {
+                thrustParticles.Stop();
+            }
+        }
+    }
+
+    // Optional: Add some screen wrapping or boundary control
+    void CheckBoundaries()
+    {
+        // You can add screen wrapping logic here if needed
+        Vector3 viewportPos = Camera.main.WorldToViewportPoint(transform.position);
+
+        if (viewportPos.x > 1.1f) transform.position = Camera.main.ViewportToWorldPoint(new Vector3(-0.1f, viewportPos.y, 0));
+        if (viewportPos.x < -0.1f) transform.position = Camera.main.ViewportToWorldPoint(new Vector3(1.1f, viewportPos.y, 0));
+        if (viewportPos.y > 1.1f) transform.position = Camera.main.ViewportToWorldPoint(new Vector3(viewportPos.x, -0.1f, 0));
+        if (viewportPos.y < -0.1f) transform.position = Camera.main.ViewportToWorldPoint(new Vector3(viewportPos.x, 1.1f, 0));
+    }
+}
