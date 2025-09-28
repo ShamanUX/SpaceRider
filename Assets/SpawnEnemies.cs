@@ -27,28 +27,6 @@ public class SpawnEnemies : MonoBehaviour
 
     IEnumerator SpawnEnemy()
     {
-        // Fast, small enemy
-        EnemyConfig fastEnemy = new EnemyConfig
-        {
-            color = Color.magenta,
-            size = 0.7f,
-            moveSpeed = 3f,
-            playerChaseSpeed = 5f,
-            sightDistance = 10f, 
-            health = 100
-        };
-
-        // Fast, small enemy
-        EnemyConfig basicEnemy = new EnemyConfig
-        {
-            color = Color.blue,
-            size = 1f,
-            moveSpeed = 2f,
-            playerChaseSpeed = 3f,
-            sightDistance = 10f,
-            health = 50
-        };
-
         while (true)
         {
             // Randomly spawn either fast or slow enemies   w
@@ -56,10 +34,28 @@ public class SpawnEnemies : MonoBehaviour
             EnemyConfig config;
             if ( randomNumber <=4)
             {
-                config = fastEnemy;
+                // Fast enemy
+                config = new EnemyConfig
+                {
+                    color = Color.magenta,
+                    size = 0.7f,
+                    moveSpeed = 3f,
+                    playerChaseSpeed = 5f,
+                    sightDistance = 10f,
+                    health = 50
+                };
             } else
             {
-                config = basicEnemy;
+                // Basic enemy
+                config = new EnemyConfig
+                {
+                    color = Color.blue,
+                    size = 1f,
+                    moveSpeed = 2f,
+                    playerChaseSpeed = 3f,
+                    sightDistance = 10f,
+                    health = 100
+                };
             }
 
             GameObject enemyObj = new GameObject("Enemy");

@@ -207,13 +207,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &35132258
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -461,13 +469,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &83476472
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -715,13 +731,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &210742710
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1003,13 +1027,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &274898924
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1257,13 +1289,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &474268347
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1511,13 +1551,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &494704102
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1654,13 +1702,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &509748390
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2230,13 +2286,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &664249052
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2593,13 +2657,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &866302124
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2736,13 +2808,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &882347315
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2913,13 +2993,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &973419222
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2982,16 +3070,16 @@ GameObject:
   m_Component:
   - component: {fileID: 1015456441}
   - component: {fileID: 1015456440}
-  - component: {fileID: 1015456439}
   - component: {fileID: 1015456438}
   - component: {fileID: 1015456442}
+  - component: {fileID: 1015456443}
   m_Layer: 0
   m_Name: MasterBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!50 &1015456438
 Rigidbody2D:
   serializedVersion: 4
@@ -3013,25 +3101,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1015456439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1015456436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
 --- !u!212 &1015456440
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3092,7 +3161,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1015456436}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.63, y: 0.02, z: 0}
+  m_LocalPosition: {x: -10.89, y: 0.09, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3115,6 +3184,33 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &1015456443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015456436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!1 &1023595592
 GameObject:
   m_ObjectHideFlags: 0
@@ -3233,13 +3329,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &1042026327
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3376,13 +3480,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &1062438431
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3937,13 +4049,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &1416908098
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4413,13 +4533,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &1646305841
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4617,6 +4745,52 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1710984027
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1710984029}
+  - component: {fileID: 1710984028}
+  m_Layer: 0
+  m_Name: EnemyController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1710984028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710984027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6fbaa92313065479168c580eb52c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemySprite: {fileID: -2413806693520163455, guid: 2556530527a7f91419539793ab868e21, type: 3}
+  spawnInterval: 5
+--- !u!4 &1710984029
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710984027}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.73, y: -0.25, z: -0.22999999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1732798737
 GameObject:
   m_ObjectHideFlags: 0
@@ -4701,13 +4875,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &1732798742
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5066,13 +5248,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &1781492139
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5320,13 +5510,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &1922236992
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5678,7 +5876,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2066346524}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.97, y: -0.6, z: 0}
+  m_LocalPosition: {x: 11.15, y: -0.32, z: 0}
   m_LocalScale: {x: 0.3858, y: 0.99788934, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5738,6 +5936,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSprite: {fileID: -2413806693520163455, guid: 2556530527a7f91419539793ab868e21, type: 3}
+  fireRate: 0.1
+  bulletSpeed: 1000
+  bulletScale: 0.2
 --- !u!1 &2072491242
 GameObject:
   m_ObjectHideFlags: 0
@@ -5864,7 +6065,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2104484982
 Transform:
   m_ObjectHideFlags: 0
@@ -5985,13 +6186,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &2105804118
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6128,13 +6337,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &2106847251
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6271,13 +6488,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcbaefded0beb048b2e93c0ebfd6e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  playerChaseSpeed: 2
-  sightDistance: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  targetUpdateRate: 0.3
+  config:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    size: 1
+    moveSpeed: 3
+    playerChaseSpeed: 5
+    drag: 0.5
+    mass: 1
+    gravityScale: 0
+    sightDistance: 8
+    playerDetectionAngle: 90
+    targetUpdateRate: 0.3
+    health: 100
+    damage: 10
+    attackRange: 2
+    attackRate: 1
 --- !u!212 &2145255377
 SpriteRenderer:
   m_ObjectHideFlags: 0

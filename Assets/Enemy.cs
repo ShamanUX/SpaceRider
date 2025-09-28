@@ -16,6 +16,11 @@ public class EnemyConfig
     public float mass = 1f;
     public float gravityScale = 0;
 
+    [Header("Movement Physics")]
+    public float moveRate = 0.3f;
+    public float moveForcePerTick = 10f;
+    public float maxForce = 20f;
+
     [Header("AI Behavior")]
     public float sightDistance = 8f;
     public float playerDetectionAngle = 90f;
@@ -26,11 +31,13 @@ public class EnemyConfig
     public int damage = 10;
     public float attackRange = 2f;
     public float attackRate = 1f;
+
+    
+
 }
 
 public class Enemy : MonoBehaviour
 {
-
     [Header("Enemy Configuration")]
     public EnemyConfig config;
 
@@ -46,15 +53,14 @@ public class Enemy : MonoBehaviour
     {
         config = enemyConfig;
         ApplyConfig();
-    }
-    void Start()
-    {
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         InvokeRepeating(nameof(UpdateTarget), 0f, config.targetUpdateRate);
+        InvokeRepeating(nameof(MoveTowardsTarget), 0f, config.moveRate);
         ballWidth = GetComponent<Collider2D>().bounds.size.x;
         Debug.Log("ballwidth" + ballWidth);
     }
+
 
     void ApplyConfig()
     {
@@ -75,12 +81,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
-
     void Update()
     {
         CheckPlayerLineOfSight();
-        MoveTowardsTarget();
     }
 
     void CheckPlayerLineOfSight()
@@ -139,15 +142,11 @@ public class Enemy : MonoBehaviour
             bool hasLineOfSight = hit.collider == null ||
                                     hit.collider.gameObject == gap;
 
-
-
             if (hasLineOfSight && distanceToGate > bestDistance)
             {
                 bestDistance = distanceToGate;
                 bestPosition = gapCenter;
             }
-
-
         }
 
         // If no gates with line of sight found, find closest gap
@@ -174,67 +173,25 @@ public class Enemy : MonoBehaviour
         return bestPosition;
     }
 
-    float CalculateGateScore(GameObject gate, Vector2 gapCenter)
-    {
-        float score = 0f;
-
-        // Prefer gates that are closer
-        float distance = Vector2.Distance(transform.position, gapCenter);
-        score += 10f / (distance + 1f);
-
-        // Prefer gates with larger gaps
-        float gapSize = CalculateGapSize(gate);
-        score += gapSize * 5f;
-
-        // Prefer gates that are more aligned with our current position
-        float verticalAlignment = 1f - Mathf.Abs(transform.position.y - gapCenter.y) / 10f;
-        score += verticalAlignment * 3f;
-
-        // Avoid gates that are too close to screen edges
-        float edgeSafety = CalculateEdgeSafety(gapCenter);
-        score += edgeSafety * 2f;
-
-        return score;
-    }
-
-    float CalculateGapSize(GameObject gate)
-    {
-        Transform topGate = null;
-        Transform bottomGate = null;
-
-        foreach (Transform child in gate.transform)
-        {
-            if (child.name.Contains("Top")) topGate = child;
-            if (child.name.Contains("Bottom")) bottomGate = child;
-        }
-
-        if (topGate != null && bottomGate != null)
-        {
-            return Mathf.Abs(topGate.position.y - bottomGate.position.y);
-        }
-
-        return 0f;
-    }
-
-    float CalculateEdgeSafety(Vector2 position)
-    {
-        Camera cam = Camera.main;
-        Vector3 viewportPos = cam.WorldToViewportPoint(position);
-
-        // Score higher for positions away from screen edges
-        float horizontalSafety = 1f - Mathf.Abs(viewportPos.x - 0.5f) * 2f;
-        float verticalSafety = 1f - Mathf.Abs(viewportPos.y - 0.5f) * 2f;
-
-        return (horizontalSafety + verticalSafety) / 2f;
-    }
-
     void MoveTowardsTarget()
     {
         Vector2 direction = (currentTarget - (Vector2)transform.position).normalized;
         float currentSpeed = canSeePlayer ? config.playerChaseSpeed : config.moveSpeed;
 
-        // Simple movement towards target
-        rb.velocity = direction * currentSpeed;
+        // Use AddForce for gradual acceleration
+        Vector2 desiredVelocity = direction * currentSpeed;
+        Vector2 force = (desiredVelocity - rb.velocity) * config.moveForcePerTick;
+
+        // Limit maximum force to prevent overshooting
+        force = Vector2.ClampMagnitude(force, config.maxForce);
+
+        rb.AddForce(force);
+
+        // Optional: Limit maximum velocity
+        if (rb.velocity.magnitude > currentSpeed)
+        {
+            rb.velocity = rb.velocity.normalized * currentSpeed;
+        }
     }
 
     void OnDrawGizmos()
@@ -251,5 +208,38 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            TakeKnockback(collision.gameObject.GetComponent<Rigidbody2D>().velocity.normalized * 2);
+            TakeDamage(5);
+            Destroy(collision.gameObject);
+            
+        }
+    }
+
+    public void TakeKnockback(Vector2 force, float resistanceMultiplier = 1f)
+    {
+        // Add knockback variables
+        float knockbackResistance = 1f; // Lower = more knockback
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            // Apply knockback force (adjust by resistance)
+            rb.AddForce((1f / knockbackResistance) * resistanceMultiplier * force, ForceMode2D.Impulse);
+
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        config.health -= amount;
+        if (config.health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
 
 }
