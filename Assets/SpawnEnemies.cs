@@ -78,7 +78,7 @@ public class SpawnEnemies : MonoBehaviour
             enemyObj.transform.position = transform.position;
             enemyObj.transform.localScale = Vector3.one * config.size;
 
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(60);
         }
     }
 }
