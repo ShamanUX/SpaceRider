@@ -42,8 +42,6 @@ public class SpaceShipWeapons : MonoBehaviour
 
         rb.AddForce(this.gameObject.transform.up * 1000, ForceMode2D.Force);
         rb.gravityScale = 0;
-        bullet.transform.position = this.gameObject.transform.position + this.gameObject.transform.up * 2f;
-
-
+        bullet.transform.position = this.gameObject.transform.position + this.gameObject.transform.up * 0.8f;
     }
 }
