@@ -4,10 +4,9 @@ using System.Collections.Generic;
 public class BallAI : MonoBehaviour
 {
     [Header("AI Settings")]
-    public float moveSpeed = 3f;
-    public float playerChaseSpeed = 5f;
+    public float moveSpeed = 1f;
+    public float playerChaseSpeed = 2f;
     public float sightDistance = 8f;
-    public float playerDetectionAngle = 90f;
 
     [Header("Targeting")]
     public LayerMask obstacleLayer;
@@ -18,11 +17,16 @@ public class BallAI : MonoBehaviour
     private Vector2 currentTarget;
     private bool canSeePlayer = false;
 
+    private float ballWidth;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        InvokeRepeating("UpdateTarget", 0f, targetUpdateRate);
+        InvokeRepeating(nameof(UpdateTarget), 0f, targetUpdateRate);
+        ballWidth = GetComponent<Collider2D>().bounds.size.x;
+        Debug.Log("ballwidth"+ ballWidth);
     }
 
     void Update()
@@ -43,18 +47,13 @@ public class BallAI : MonoBehaviour
         // Check if player is within sight distance and angle
         if (distanceToPlayer <= sightDistance)
         {
-            float angleToPlayer = Vector2.Angle(transform.up, directionToPlayer);
+            // Raycast to check if there's clear line of sight
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstacleLayer);
 
-            if (angleToPlayer <= playerDetectionAngle / 2f)
+            if (hit.collider == null || hit.collider.CompareTag("Player"))
             {
-                // Raycast to check if there's clear line of sight
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstacleLayer);
-
-                if (hit.collider == null || hit.collider.CompareTag("Player"))
-                {
-                    canSeePlayer = true;
-                    currentTarget = player.position;
-                }
+                canSeePlayer = true;
+                currentTarget = player.position;
             }
         }
     }
@@ -69,58 +68,62 @@ public class BallAI : MonoBehaviour
 
     Vector2 FindSafestGatePosition()
     {
-        GameObject[] gates = GameObject.FindGameObjectsWithTag("Obstacle");
-        Vector2 bestPosition = transform.position; // Default to current position
-        float bestScore = -Mathf.Infinity;
+    GameObject[] gateGaps = GameObject.FindGameObjectsWithTag("Gap");
+    Vector2 bestPosition = transform.position; // Default to current position
+    float bestDistance = -Mathf.Infinity;
 
-        foreach (GameObject gate in gates)
-        {
-            if (gate.name != "Gate") continue;
-
-            // Skip gates that are behind us or too far
-            float xDifference = gate.transform.position.x - transform.position.x;
-            if (xDifference < 0) continue; // Don't target gates behind us
-
-            // Calculate gap center
-            Vector2 gapCenter = GetGateGapCenter(gate);
-            if (gapCenter == Vector2.zero) continue;
-
-            // Score this gate based on safety and proximity
-            float score = CalculateGateScore(gate, gapCenter);
-
-            if (score > bestScore)
-            {
-                bestScore = score;
-                bestPosition = gapCenter;
-            }
-        }
-
-        // If no good gates found, move towards center of screen
-        if (bestScore == -Mathf.Infinity)
-        {
-            bestPosition = new Vector2(transform.position.x + 5f, 0f);
-        }
-
-        return bestPosition;
-    }
-
-    Vector2 GetGateGapCenter(GameObject gate)
+    foreach (GameObject gap in gateGaps)
     {
-        Transform topGate = null;
-        Transform bottomGate = null;
 
-        foreach (Transform child in gate.transform)
+        // Skip gates that are behind us
+        float xDifference = gap.transform.position.x - transform.position.x;
+        if (xDifference < 0) continue;
+
+        Vector2 gapCenter = gap.transform.position;
+
+        // Check line of sight to this gate
+        float distanceToGate = Vector2.Distance(transform.position, gapCenter);
+        Vector2 directionToGate = (gapCenter - (Vector2)transform.position).normalized;
+        
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToGate, distanceToGate, obstacleLayer);
+
+        // If we have clear line of sight (only hit the target gate or nothing)
+        bool hasLineOfSight = hit.collider == null ||
+                                hit.collider.gameObject == gap;
+
+
+        
+        if (hasLineOfSight && distanceToGate > bestDistance)
         {
-            if (child.name.Contains("Top")) topGate = child;
-            if (child.name.Contains("Bottom")) bottomGate = child;
+            bestDistance = distanceToGate;
+            bestPosition = gapCenter;
         }
 
-        if (topGate != null && bottomGate != null)
+            
+    }
+    
+    // If no gates with line of sight found, find closest gap
+    if (bestDistance == -Mathf.Infinity)
+    {
+        foreach (GameObject gap in gateGaps)
         {
-            return (topGate.position + bottomGate.position) / 2f;
-        }
 
-        return Vector2.zero;
+            float xDifference = gap.transform.position.x - transform.position.x;
+            if (xDifference < 0) continue;
+
+            if (gap.transform.position.x < bestPosition.x)
+                {
+                    Debug.Log("Fallback to closest gap");
+                    bestPosition = gap.transform.position;
+                }
+        }
+    }
+    
+    if (bestDistance == -Mathf.Infinity)
+        {
+            Debug.Log("No best position found!");
+        }
+    return bestPosition;
     }
 
     float CalculateGateScore(GameObject gate, Vector2 gapCenter)
@@ -184,13 +187,6 @@ public class BallAI : MonoBehaviour
 
         // Simple movement towards target
         rb.velocity = direction * currentSpeed;
-
-        // Optional: Rotate to face movement direction
-        if (rb.velocity.magnitude > 0.1f)
-        {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
-            transform.rotation = Quaternion.Euler(0f, 0f, angle);
-        }
     }
 
     void OnDrawGizmos()
@@ -198,25 +194,12 @@ public class BallAI : MonoBehaviour
         // Draw line to current target
         if (Application.isPlaying)
         {
-            Gizmos.color = canSeePlayer ? Color.red : Color.green;
+            Gizmos.color = canSeePlayer ? Color.red : Color.blue;
             Gizmos.DrawLine(transform.position, currentTarget);
             Gizmos.DrawWireSphere(currentTarget, 0.3f);
 
             // Draw vision cone
             Gizmos.color = Color.yellow;
-            DrawVisionCone();
         }
-    }
-
-    void DrawVisionCone()
-    {
-        float halfAngle = playerDetectionAngle / 2f;
-        Vector2 forward = transform.up;
-
-        Vector2 leftDir = Quaternion.Euler(0, 0, halfAngle) * forward;
-        Vector2 rightDir = Quaternion.Euler(0, 0, -halfAngle) * forward;
-
-        Gizmos.DrawRay(transform.position, leftDir * sightDistance);
-        Gizmos.DrawRay(transform.position, rightDir * sightDistance);
     }
 }

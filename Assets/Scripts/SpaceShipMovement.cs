@@ -79,16 +79,4 @@ public class SpaceShipMovement : MonoBehaviour
             }
         }
     }
-
-    // Optional: Add some screen wrapping or boundary control
-    void CheckBoundaries()
-    {
-        // You can add screen wrapping logic here if needed
-        Vector3 viewportPos = Camera.main.WorldToViewportPoint(transform.position);
-
-        if (viewportPos.x > 1.1f) transform.position = Camera.main.ViewportToWorldPoint(new Vector3(-0.1f, viewportPos.y, 0));
-        if (viewportPos.x < -0.1f) transform.position = Camera.main.ViewportToWorldPoint(new Vector3(1.1f, viewportPos.y, 0));
-        if (viewportPos.y > 1.1f) transform.position = Camera.main.ViewportToWorldPoint(new Vector3(viewportPos.x, -0.1f, 0));
-        if (viewportPos.y < -0.1f) transform.position = Camera.main.ViewportToWorldPoint(new Vector3(viewportPos.x, 1.1f, 0));
-    }
 }

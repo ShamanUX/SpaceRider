@@ -4,6 +4,7 @@ using System.Collections;
 public class SpawnObstacles : MonoBehaviour
 {
     public Sprite rectangleSprite;
+
     public float scrollSpeed = 2f;
     public float spawnInterval = 1f;
     public float maxGapSize = 0.5f; // Max 1/2 screen size gap
@@ -89,17 +90,31 @@ public class SpawnObstacles : MonoBehaviour
         float extensionAmount = 2f;
 
         // Spawn top rectangle
-        GameObject topRect = CreateRectangle("TopGate");
+        GameObject topRect = CreateRectangle("TopGate", Color.red, "Obstacle");
         topRect.transform.parent = gate.transform;
         topRect.transform.localPosition = new Vector3(0, screenHeight / 2 - (topHeight / 2 - extensionAmount), 0);
         topRect.transform.localScale = new Vector3(0.5f, topHeight + extensionAmount, 1f);
+        topRect.AddComponent<BoxCollider2D>();
+        topRect.layer = 6;
 
 
         // Spawn bottom rectangle
-        GameObject bottomRect = CreateRectangle("BottomGate");
+        GameObject bottomRect = CreateRectangle("BottomGate", Color.red, "Obstacle");
         bottomRect.transform.parent = gate.transform;
         bottomRect.transform.localPosition = new Vector3(0, -screenHeight / 2 + (bottomHeight / 2 - extensionAmount), 0);
         bottomRect.transform.localScale = new Vector3(0.5f, bottomHeight + extensionAmount, 1f);
+        bottomRect.AddComponent<BoxCollider2D>();
+        bottomRect.layer = 6;
+
+        // Spawn gap area
+        GameObject gateGap = CreateRectangle("GateGap", Color.green, "Gap");
+        gateGap.transform.parent = gate.transform;
+        gateGap.transform.localPosition = new Vector3(0, screenHeight/2 - topHeight - gapSize / 2, 0);
+        gateGap.transform.localScale = new Vector3(0.5f, gapSize + extensionAmount, 1f);
+        BoxCollider2D gapCollider = gateGap.AddComponent<BoxCollider2D>();
+        gapCollider.isTrigger = true; 
+        
+        
 
 
         // Position gate to the right of the screen
@@ -109,14 +124,6 @@ public class SpawnObstacles : MonoBehaviour
             0
         );
 
-        // Add collider to the entire gate (optional, or keep individual colliders)
-        BoxCollider2D gateCollider = gate.AddComponent<BoxCollider2D>();
-        gateCollider.isTrigger = true;
-
-        // Add rigidbody to the gate
-        Rigidbody2D gateRb = gate.AddComponent<Rigidbody2D>();
-        gateRb.isKinematic = true; // So it doesn't fall due to gravity
-        gateRb.constraints = RigidbodyConstraints2D.FreezeAll; // Prevent rotation/movement by physics
     }
 
     void SpawnRandomGate()
@@ -129,18 +136,16 @@ public class SpawnObstacles : MonoBehaviour
        
     }
 
-    GameObject CreateRectangle(string name)
+    GameObject CreateRectangle(string name, Color color, string tag)
     {
         GameObject rect = new GameObject(name);
-        rect.tag = "Obstacle";
+        rect.tag = tag;
 
         // Add sprite renderer
         SpriteRenderer sr = rect.AddComponent<SpriteRenderer>();
         sr.sprite = rectangleSprite;
-        sr.color = Color.red; // Make obstacles visible
-
-        // Add collider
-        BoxCollider2D collider = rect.AddComponent<BoxCollider2D>();
+        color.a = 0.5f;
+        sr.color = color; // Make obstacles visible
 
         return rect;
     }
