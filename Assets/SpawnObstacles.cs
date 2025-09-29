@@ -13,7 +13,7 @@ public class SpawnObstacles : MonoBehaviour
     private float screenHeight;
     private float screenWidth;
 
-    public float sPatternGap = 2;
+    public float sPatternGapSize = 2;
     public float sPatternStartTopHeight = 1;
     public float heightModulator = 1;
 
@@ -33,7 +33,7 @@ public class SpawnObstacles : MonoBehaviour
         {
             // Only apply to "Gate" obstacles
             if (obstacle.name != "Gate") continue;
-            obstacle.transform.Translate(Vector3.left * scrollSpeed * Time.deltaTime);
+            obstacle.transform.Translate(scrollSpeed * Time.deltaTime * Vector3.left);
 
             // Destroy obstacles that go off-screen to the left
             if (obstacle.transform.position.x < -screenWidth * 1.5f)
@@ -62,20 +62,33 @@ public class SpawnObstacles : MonoBehaviour
 
     IEnumerator SpawnSPatternGate()
     {
-
         float currentTopHeight= sPatternStartTopHeight;
 
         while (true) {
             yield return new WaitForSeconds(spawnInterval);
-            CreateGate(sPatternGap, currentTopHeight);
-            if (currentTopHeight + heightModulator >= screenHeight -0.5f || currentTopHeight + heightModulator <= 0.5f)
+            //float currentBottomHeight = screenHeight - currentTopHeight - sPatternGapSize;
+            CreateGate(sPatternGapSize, currentTopHeight);
+            Debug.Log("CurrentTopHeight " + currentTopHeight);
+            float maxTopHeight = screenHeight - sPatternGapSize;
+            if (currentTopHeight + heightModulator >= maxTopHeight || currentTopHeight + heightModulator <= 0f)
             {
+               if (heightModulator < 0)
+                // gap moving towards top
+                { 
+                    currentTopHeight = Mathf.Abs(heightModulator) - currentTopHeight;
+                } else
+                // gap moving towards bottom
+                {
+                    float leftOverHeightModulation = currentTopHeight + heightModulator - maxTopHeight;
+
+                    currentTopHeight = screenHeight - leftOverHeightModulation - sPatternGapSize;
+                }
                 heightModulator = -heightModulator;
+            } else
+            {
+                currentTopHeight += heightModulator;
             }
-            currentTopHeight += heightModulator;
-
         }
-
     }
 
     void CreateGate(float gapSize, float topHeight)
@@ -87,7 +100,7 @@ public class SpawnObstacles : MonoBehaviour
         float bottomHeight = screenHeight - topHeight - gapSize;
 
         // Extend obstacle slightly over the camera view 
-        float extensionAmount = 2f;
+        float extensionAmount = 0;
 
         // Spawn top rectangle
         GameObject topRect = CreateRectangle("TopGate", Color.red, "Obstacle");
