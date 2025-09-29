@@ -2417,7 +2417,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 771204361}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -3730,12 +3730,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectangleSprite: {fileID: 7482667652216324306, guid: 2d8dd1fb674c82a40b15bc197c26a75b, type: 3}
-  scrollSpeed: 0.3
-  spawnInterval: 4.28
-  maxGapSize: 0.5
-  sPatternGap: 2
-  sPatternStartTopHeight: 4.75
-  heightModulator: 5
+  currentLevelConfig:
+    scrollSpeed: 2
+    spawnInterval: 1
+    maxGapSize: 4
+    levelPattern: 1
+    sPatternStartTopHeight: 0
+    heightModulator: 1
 --- !u!4 &1220811784
 Transform:
   m_ObjectHideFlags: 0

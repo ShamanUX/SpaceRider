@@ -30,7 +30,7 @@ public class SpawnEnemies : MonoBehaviour
         while (true)
         {
             // Randomly spawn either fast or slow enemies   w
-            int randomNumber = Random.Range(1,10);
+            int randomNumber = Random.Range(1,11);
             EnemyConfig config;
             if ( randomNumber <=4)
             {
@@ -42,19 +42,31 @@ public class SpawnEnemies : MonoBehaviour
                     moveSpeed = 3f,
                     playerChaseSpeed = 5f,
                     sightDistance = 10f,
-                    health = 50
+                    health = 4
                 };
-            } else
+            } else if (randomNumber <= 9)
             {
                 // Basic enemy
                 config = new EnemyConfig
                 {
                     color = Color.blue,
                     size = 1f,
-                    moveSpeed = 2f,
-                    playerChaseSpeed = 3f,
+                    moveSpeed = 3f,
+                    playerChaseSpeed = 4f,
                     sightDistance = 10f,
-                    health = 100
+                    health = 8
+                };
+            } else
+            {
+                // Super fast enemy
+                config = new EnemyConfig
+                {
+                    size = 0.5f,
+                    moveSpeed = 5f,
+                    playerChaseSpeed = 7f,
+                    sightDistance = 10f,
+                    health = 2,
+                    color = Color.red,
                 };
             }
 
@@ -78,7 +90,7 @@ public class SpawnEnemies : MonoBehaviour
             enemyObj.transform.position = transform.position;
             enemyObj.transform.localScale = Vector3.one * config.size;
 
-            yield return new WaitForSeconds(60);
+            yield return new WaitForSeconds(2);
         }
     }
 }

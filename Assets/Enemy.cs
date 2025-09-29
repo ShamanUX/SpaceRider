@@ -17,7 +17,7 @@ public class EnemyConfig
     public float gravityScale = 0;
 
     [Header("Movement Physics")]
-    public float moveRate = 0.3f;
+    public float moveRate = 0.2f;
     public float moveForcePerTick = 10f;
     public float maxForce = 20f;
 
@@ -31,9 +31,6 @@ public class EnemyConfig
     public int damage = 10;
     public float attackRange = 2f;
     public float attackRate = 1f;
-
-    
-
 }
 
 public class Enemy : MonoBehaviour
@@ -221,7 +218,7 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet"))
         {
             TakeKnockback(collision.gameObject.GetComponent<Rigidbody2D>().velocity.normalized * 2);
-            TakeDamage(5);
+            TakeDamage(1);
             Destroy(collision.gameObject);
             
         }

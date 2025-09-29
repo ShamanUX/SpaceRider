@@ -3,32 +3,64 @@ using UnityEngine;
 public class BoundaryManager : MonoBehaviour
 {
     private Camera mainCamera;
-    private BoxCollider2D boundaryCollider;
+    private GameObject[] boundaryWalls = new GameObject[4];
 
     void Start()
     {
         mainCamera = Camera.main;
-        boundaryCollider = GetComponent<BoxCollider2D>();
-        CreateCameraBoundary();
+        CreateFourWalls();
     }
 
-    void CreateCameraBoundary()
+    void CreateFourWalls()
     {
-        if (mainCamera == null || boundaryCollider == null) return;
+        if (mainCamera == null) return;
 
-        // Collider size exactly screen size
         Vector2 screenSize = GetScreenWorldSize();
-        boundaryCollider.size = new Vector2(screenSize.x, screenSize.y);
-        boundaryCollider.isTrigger = true;
+        float wallThickness = 1f; // Adjust thickness as needed
+
+        // Destroy existing walls if they exist
+        foreach (GameObject wall in boundaryWalls)
+        {
+            if (wall != null) Destroy(wall);
+        }
+
+        // Create four walls
+        boundaryWalls[0] = CreateWall("TopWall", new Vector2(0, screenSize.y / 2 + wallThickness / 2),
+            new Vector2(screenSize.x + wallThickness * 2, wallThickness));
+
+        boundaryWalls[1] = CreateWall("BottomWall", new Vector2(0, -screenSize.y / 2 - wallThickness / 2),
+            new Vector2(screenSize.x + wallThickness * 2, wallThickness));
+
+        boundaryWalls[2] = CreateWall("RightWall", new Vector2(screenSize.x / 2 + wallThickness / 2, 0),
+            new Vector2(wallThickness, screenSize.y + wallThickness * 2));
+
+        boundaryWalls[3] = CreateWall("LeftWall", new Vector2(-screenSize.x / 2 - wallThickness / 2, 0),
+            new Vector2(wallThickness, screenSize.y + wallThickness * 2));
+    }
+
+    GameObject CreateWall(string wallName, Vector2 position, Vector2 size)
+    {
+        GameObject wall = new GameObject(wallName);
+        wall.transform.parent = transform;
+        wall.transform.position = position;
+
+        BoxCollider2D wallCollider = wall.AddComponent<BoxCollider2D>();
+        wallCollider.size = size;
+        // DISABLED TRIGGER OF WALL
+        // wallCollider.isTrigger = true;
+
+        return wall;
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player")) 
+        if (other.CompareTag("Player"))
         {
             Debug.Log("Wrap object");
             WrapObject(other.transform);
-        } else if (other.CompareTag("Bullet")) {
+        }
+        else if (other.CompareTag("Bullet"))
+        {
             Destroy(other.gameObject);
         }
     }
@@ -37,8 +69,6 @@ public class BoundaryManager : MonoBehaviour
     {
         Vector3 viewportPos = mainCamera.WorldToViewportPoint(objectToWrap.position);
         Vector3 newPosition = objectToWrap.position;
-
-        Debug.Log("Vwpos x: " + viewportPos.x + " vwpos y: " + viewportPos.y);
 
         // Determine which side the object exited and wrap accordingly
         if (viewportPos.x > 1.0f || viewportPos.x < 0f)
@@ -66,7 +96,7 @@ public class BoundaryManager : MonoBehaviour
         if (Screen.width != Screen.currentResolution.width ||
             Screen.height != Screen.currentResolution.height)
         {
-            CreateCameraBoundary();
+            CreateFourWalls();
         }
     }
 }
