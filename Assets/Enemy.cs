@@ -118,14 +118,16 @@ public class Enemy : MonoBehaviour
         GameObject[] gateGaps = GameObject.FindGameObjectsWithTag("Gap");
         Vector2 bestPosition = transform.position; // Default to current position
         float bestDistance = -Mathf.Infinity;
-        float bestXDistance = -Mathf.Infinity;
+        float bestHorizontalDistance = -Mathf.Infinity;
+
+        bool playerIsInFront = GameObject.FindGameObjectWithTag("Player").transform.position.x > transform.position.x ;
 
         foreach (GameObject gap in gateGaps)
         {
-
-            // Skip gates that are behind us
+            // Skip gates that are away from the player
             float xDifference = gap.transform.position.x - transform.position.x;
-            if (xDifference < 0f) continue;
+            if (playerIsInFront && xDifference < 0f) continue;
+            if (!playerIsInFront && xDifference > 0f) continue;
 
             Vector2 gapCenter = gap.transform.position;
 
@@ -158,14 +160,14 @@ public class Enemy : MonoBehaviour
                 if (bestDistance == -Mathf.Infinity)
                 {
                     bestDistance = distanceToGate;
-                    bestXDistance = xDifference;
+                    bestHorizontalDistance = xDifference;
                 }
 
-                if (xDifference <= bestXDistance && distanceToGate <= bestDistance)
+                if (xDifference <= bestHorizontalDistance && distanceToGate <= bestDistance)
                 {
                     Debug.Log("Fallback to closest gap");
                     bestPosition = gap.transform.position;
-                    bestXDistance = xDifference;
+                    bestHorizontalDistance = xDifference;
                 }
             }
         }
