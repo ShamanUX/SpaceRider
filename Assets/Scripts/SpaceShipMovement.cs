@@ -6,7 +6,7 @@ public class SpaceShipMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float thrustForce = 5f;
-    public float rotationSpeed = 180f;
+    public float rotationSpeed = 300f;
     public float maxVelocity = 10f;
     public float dragInSpace = 0.5f;
 

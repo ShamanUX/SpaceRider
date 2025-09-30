@@ -49,7 +49,7 @@ public class SpawnEnemies : MonoBehaviour
                 // Basic enemy
                 config = new EnemyConfig
                 {
-                    color = Color.blue,
+                    color = Color.yellow,
                     size = 1f,
                     moveSpeed = 3f,
                     playerChaseSpeed = 4f,
@@ -90,7 +90,7 @@ public class SpawnEnemies : MonoBehaviour
             enemyObj.transform.position = transform.position;
             enemyObj.transform.localScale = Vector3.one * config.size;
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
         }
     }
 }

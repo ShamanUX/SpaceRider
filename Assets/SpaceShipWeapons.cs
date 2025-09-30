@@ -13,10 +13,12 @@ public class SpaceShipWeapons : MonoBehaviour
 
     private float nextFireTime = 0f;
 
+    private AmmoGauge ammoGauge;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        ammoGauge = GameObject.FindObjectOfType<AmmoGauge>();
     }
 
     // Update is called once per frame
@@ -32,10 +34,22 @@ public class SpaceShipWeapons : MonoBehaviour
         
         if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime)
         {
-            FireWeapon();
+            TryFireWeapon();
             nextFireTime = Time.time + fireRate;
         }
         
+    }
+    void TryFireWeapon()
+    {
+        if (ammoGauge != null && ammoGauge.UseShot())
+        {
+            FireWeapon();
+        }
+        else
+        {
+            // Play empty sound, show message, etc.
+            Debug.Log("Out of ammo!");
+        }
     }
 
     void FireWeapon()

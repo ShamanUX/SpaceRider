@@ -27,8 +27,19 @@ public class LevelConfig
 public class SpawnObstacles : MonoBehaviour
 {
     public Sprite rectangleSprite;
+    public Sprite caveTile;
 
     public LevelConfig currentLevelConfig = new LevelConfig();
+
+    LevelConfig easySPattern = new LevelConfig
+    {
+        scrollSpeed = 2f,
+        spawnInterval = 0.5f,
+        maxGapSize = 3,
+        levelPattern = LevelConfig.Pattern.SPattern,
+        sPatternStartTopHeight = 0,
+        heightModulator = 1,
+    };
 
     private Camera mainCamera;
     private float screenHeight;
@@ -41,6 +52,7 @@ public class SpawnObstacles : MonoBehaviour
         CalculateScreenBounds();
         //StartCoroutine(SpawnGatesRoutine());
         StartCoroutine(SpawnSPatternGate());
+        currentLevelConfig = easySPattern;
     }
 
     void Update()
@@ -126,7 +138,9 @@ public class SpawnObstacles : MonoBehaviour
         topRect.AddComponent<BoxCollider2D>();
         topRect.AddComponent<Obstacle>();
         topRect.layer = 6;
+        FillRectWithCaveBlocks(topRect, "top");
 
+       
         // Spawn bottom rectangle
         GameObject bottomRect = CreateRectangle("BottomGate", Color.red, "Obstacle");
         bottomRect.transform.parent = gate.transform;
@@ -135,6 +149,7 @@ public class SpawnObstacles : MonoBehaviour
         bottomRect.AddComponent<BoxCollider2D>();
         bottomRect.AddComponent<Obstacle>();
         bottomRect.layer = 6;
+        FillRectWithCaveBlocks(bottomRect, "bottom");
 
         // Spawn gap area
         GameObject gateGap = CreateRectangle("GateGap", Color.green, "Gap");
@@ -174,6 +189,40 @@ public class SpawnObstacles : MonoBehaviour
 
         return rect;
     }
+
+    void FillRectWithCaveBlocks(GameObject rect, string direction)
+    {
+        Vector3 startPosition;
+        float rectWorldHeight = rect.transform.lossyScale.y;
+        float blockHeight = rect.transform.lossyScale.x;
+        int blocksNeeded = Mathf.RoundToInt(rectWorldHeight / blockHeight) + 1;
+        
+        if (direction == "top")
+        {
+         startPosition = new Vector3(rect.transform.position.x, rect.transform.position.y - rectWorldHeight / 2 + blockHeight / 2, 0);
+
+        } else
+        {
+            startPosition = new Vector3(rect.transform.position.x, rect.transform.position.y + rectWorldHeight / 2 - blockHeight / 2, 0);
+        }
+
+        for (int i = 0; blocksNeeded > i; i++)
+        {   
+            GameObject caveBlock = new GameObject("CaveBlock");
+            SpriteRenderer sr = caveBlock.AddComponent<SpriteRenderer>();
+            sr.sprite = caveTile;
+            caveBlock.transform.localScale = new Vector3(rect.transform.lossyScale.x, rect.transform.lossyScale.x, 1);
+            if (direction == "top")
+            {
+                caveBlock.transform.position = new Vector3(startPosition.x, startPosition.y + i * blockHeight, startPosition.z);
+            } else
+            {
+                caveBlock.transform.position = new Vector3(startPosition.x, startPosition.y - i * blockHeight, startPosition.z);
+            }
+            caveBlock.transform.SetParent(rect.transform);
+        }
+    }
+
 
     public class Obstacle: MonoBehaviour
     {

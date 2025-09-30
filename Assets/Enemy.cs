@@ -55,7 +55,6 @@ public class Enemy : MonoBehaviour
         InvokeRepeating(nameof(UpdateTarget), 0f, config.targetUpdateRate);
         InvokeRepeating(nameof(MoveTowardsTarget), 0f, config.moveRate);
         ballWidth = GetComponent<Collider2D>().bounds.size.x;
-        Debug.Log("ballwidth" + ballWidth);
     }
 
 
@@ -173,7 +172,7 @@ public class Enemy : MonoBehaviour
 
         if (bestPosition.Equals(new Vector2(transform.position.x, transform.position.y)))
         {
-             Debug.Log("No best position found!");
+             // Debug.Log("No best position found!");
         }
         return bestPosition;
     }
