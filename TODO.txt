@@ -1,0 +1,8 @@
+Damage?
+Lava geyser?
+Different Levels (Shapes, Random, no obstacles - only enemies)
+Boss?
+Better looking obstacle (randomize sprites?)
+Items (mine, nuke)
+Thrust animation
+

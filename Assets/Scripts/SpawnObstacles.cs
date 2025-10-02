@@ -33,6 +33,16 @@ public class SpawnObstacles : MonoBehaviour
 
     LevelConfig easySPattern = new LevelConfig
     {
+        scrollSpeed = 1f,
+        spawnInterval = 1f,
+        maxGapSize = 4,
+        levelPattern = LevelConfig.Pattern.SPattern,
+        sPatternStartTopHeight = 0,
+        heightModulator = 1,
+    };
+
+    LevelConfig tightSPattern = new LevelConfig
+    {
         scrollSpeed = 2f,
         spawnInterval = 0.5f,
         maxGapSize = 3,
@@ -52,7 +62,7 @@ public class SpawnObstacles : MonoBehaviour
         CalculateScreenBounds();
         //StartCoroutine(SpawnGatesRoutine());
         StartCoroutine(SpawnSPatternGate());
-        currentLevelConfig = easySPattern;
+        //currentLevelConfig = easySPattern;
     }
 
     void Update()
