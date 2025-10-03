@@ -8,12 +8,13 @@ public class LevelConfig
     public enum Pattern
     {
         Random,
-        SPattern
+        SPattern, 
+        Pause
     }
 
     [Header("Difficulty")]
     public float scrollSpeed = 2f;
-    public float spawnInterval = 1f;
+    public float obstacleSpawnInterlval = 1f;
     public float maxGapSize = 2f;
 
     [Header("Pattern")]
@@ -22,6 +23,9 @@ public class LevelConfig
     [Header("SPatternSettings")]
     public float sPatternStartTopHeight = 0;
     public float heightModulator = 1.5f;
+
+    [Header("")]
+    public float levelTimer;
 }
 
 public class SpawnObstacles : MonoBehaviour
@@ -29,12 +33,17 @@ public class SpawnObstacles : MonoBehaviour
     public Sprite rectangleSprite;
     public Sprite caveTile;
 
-    public LevelConfig currentLevelConfig = new LevelConfig();
+    [Header("Level controls")]
+    public LevelConfig customConfig = new LevelConfig();
+    private LevelConfig currentLevelConfig = new LevelConfig();
+    
+    private float currentLevelTimer;
 
     LevelConfig easySPattern = new LevelConfig
     {
+        levelTimer = 30,
         scrollSpeed = 1f,
-        spawnInterval = 1f,
+        obstacleSpawnInterlval = 1f,
         maxGapSize = 4,
         levelPattern = LevelConfig.Pattern.SPattern,
         sPatternStartTopHeight = 0,
@@ -43,12 +52,19 @@ public class SpawnObstacles : MonoBehaviour
 
     LevelConfig tightSPattern = new LevelConfig
     {
+        levelTimer = 30,
         scrollSpeed = 2f,
-        spawnInterval = 0.5f,
+        obstacleSpawnInterlval = 0.5f,
         maxGapSize = 3,
         levelPattern = LevelConfig.Pattern.SPattern,
         sPatternStartTopHeight = 0,
         heightModulator = 1,
+    };
+
+    LevelConfig pauseConfig = new LevelConfig
+    {
+        levelTimer = 15,
+        levelPattern = LevelConfig.Pattern.Pause
     };
 
     private Camera mainCamera;
@@ -61,7 +77,8 @@ public class SpawnObstacles : MonoBehaviour
         mainCamera = Camera.main;
         CalculateScreenBounds();
         //StartCoroutine(SpawnGatesRoutine());
-        StartCoroutine(SpawnSPatternGate());
+        currentLevelConfig = customConfig;
+        StartCoroutine(LevelRoutine(currentLevelConfig));
         //currentLevelConfig = easySPattern;
     }
 
@@ -81,6 +98,24 @@ public class SpawnObstacles : MonoBehaviour
                 Destroy(obstacle);
             }
         }
+
+        // Update time left
+        currentLevelTimer -= Time.deltaTime;
+        
+        GameObject.Find("TimerText").GetComponent<UpdateTimerText>().UpdateTime(currentLevelTimer);
+
+        if (currentLevelTimer < 0)
+        {
+            StopAllCoroutines();
+            if (currentLevelConfig.levelPattern == LevelConfig.Pattern.Pause)
+            {
+                currentLevelConfig = easySPattern;
+            } else
+            {
+                currentLevelConfig = pauseConfig;
+            }
+            StartCoroutine(LevelRoutine(currentLevelConfig));
+        }
     }
 
     void CalculateScreenBounds()
@@ -91,42 +126,54 @@ public class SpawnObstacles : MonoBehaviour
         Debug.Log("screenHeight: " + screenHeight);
     }
 
-    IEnumerator SpawnGatesRoutine()
+    IEnumerator LevelRoutine(LevelConfig config)
     {
+        float currentTopHeight = currentLevelConfig.sPatternStartTopHeight;
+        currentLevelTimer = config.levelTimer;
         while (true)
         {
-            yield return new WaitForSeconds(currentLevelConfig.spawnInterval);
-            SpawnRandomGate();
+            if (config.levelPattern == LevelConfig.Pattern.Random)
+            {
+                SpawnRandomGate();
+            } else if (config.levelPattern == LevelConfig.Pattern.SPattern)
+            {
+                CreateGate(currentLevelConfig.maxGapSize, currentTopHeight);
+                currentTopHeight = TopHeightAdjustment(currentTopHeight);
+            } else if (config.levelPattern == LevelConfig.Pattern.Pause)
+            {
+                // Do nothing
+            }
+            yield return new WaitForSeconds(currentLevelConfig.obstacleSpawnInterlval);
+            
         }
     }
 
-    IEnumerator SpawnSPatternGate()
+    float TopHeightAdjustment(float currentTopHeight) 
     {
-        float currentTopHeight= currentLevelConfig.sPatternStartTopHeight;
-
-        while (true) {
-            yield return new WaitForSeconds(currentLevelConfig.spawnInterval);
-            CreateGate(currentLevelConfig.maxGapSize, currentTopHeight);
-            float maxTopHeight = screenHeight - currentLevelConfig.maxGapSize;
-            if (currentTopHeight + currentLevelConfig.heightModulator >= maxTopHeight || currentTopHeight + currentLevelConfig.heightModulator <= 0f)
+        float maxTopHeight = screenHeight - currentLevelConfig.maxGapSize;
+        if (currentTopHeight + currentLevelConfig.heightModulator >= maxTopHeight || currentTopHeight + currentLevelConfig.heightModulator <= 0f)
+        {
+            if (currentLevelConfig.heightModulator < 0)
+            // gap moving towards top
             {
-               if (currentLevelConfig.heightModulator < 0)
-                // gap moving towards top
-                { 
-                    currentTopHeight = Mathf.Abs(currentLevelConfig.heightModulator) - currentTopHeight;
-                } else
-                // gap moving towards bottom
-                {
-                    float leftOverHeightModulation = currentTopHeight + currentLevelConfig.heightModulator - maxTopHeight;
-
-                    currentTopHeight = screenHeight - leftOverHeightModulation - currentLevelConfig.maxGapSize;
-                }
-                currentLevelConfig.heightModulator = -currentLevelConfig.heightModulator;
-            } else
-            {
-                currentTopHeight += currentLevelConfig.heightModulator;
+                currentTopHeight = Mathf.Abs(currentLevelConfig.heightModulator) - currentTopHeight;
             }
+            else
+            // gap moving towards bottom
+            {
+                float leftOverHeightModulation = currentTopHeight + currentLevelConfig.heightModulator - maxTopHeight;
+
+                currentTopHeight = screenHeight - leftOverHeightModulation - currentLevelConfig.maxGapSize;
+                
+            }
+            currentLevelConfig.heightModulator = -currentLevelConfig.heightModulator;
         }
+        else
+        {
+            currentTopHeight += currentLevelConfig.heightModulator;
+        }
+
+        return currentTopHeight;
     }
 
     void CreateGate(float gapSize, float topHeight)
@@ -175,7 +222,6 @@ public class SpawnObstacles : MonoBehaviour
             mainCamera.transform.position.y,
             0
         );
-
     }
 
     void SpawnRandomGate()
