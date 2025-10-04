@@ -7,9 +7,13 @@ public class SpawnEnemies : MonoBehaviour
 {
     public Sprite enemySprite;
 
-    public int spawnInterval = 5;
+    public float spawnInterval = 0.8f;
 
     public float minDistanceToGate = 5;
+
+    [SerializeField] private float maxForceMultiplier = 1;
+    [SerializeField] private float maxSpeedMultiplier = 1;
+
     private enum EnemyType
     {
         Basic,
@@ -26,6 +30,25 @@ public class SpawnEnemies : MonoBehaviour
     {
     }
 
+    public float GetMaxSpeedMultiplier()
+    {
+        return maxSpeedMultiplier;
+    }
+
+    public void SetMaxSpeedMultiplier(float multiplier)
+    {
+        maxSpeedMultiplier = multiplier;
+    }
+
+    public float GetMaxForceMultiplier()
+    {
+        return maxSpeedMultiplier;
+    }
+
+    public void SetMaxForceMultiplier(float multiplier)
+    {
+        maxForceMultiplier = multiplier;
+    }
     public void StartEnemySpawnRoutine()
     {
         StartCoroutine(SpawnEnemy());
@@ -90,7 +113,8 @@ public class SpawnEnemies : MonoBehaviour
                     moveSpeed = 3f,
                     playerChaseSpeed = 5f,
                     sightDistance = 30f,
-                    health = 4
+                    health = 2,
+                    orderInSortingLayer = 3
                 };
             } else if (randomNumber <= 9)
             {
@@ -102,7 +126,8 @@ public class SpawnEnemies : MonoBehaviour
                     moveSpeed = 3f,
                     playerChaseSpeed = 4f,
                     sightDistance = 30f,
-                    health = 8
+                    health = 3,
+                    orderInSortingLayer = 2
                 };
             } else
             {
@@ -113,8 +138,9 @@ public class SpawnEnemies : MonoBehaviour
                     moveSpeed = 5f,
                     playerChaseSpeed = 7f,
                     sightDistance = 30f,
-                    health = 2,
+                    health = 1,
                     color = Color.red,
+                    orderInSortingLayer= 4
                 };
             }
 

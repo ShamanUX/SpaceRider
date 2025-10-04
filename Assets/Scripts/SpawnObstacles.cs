@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 
 [System.Serializable]
@@ -14,7 +15,7 @@ public class LevelConfig
 
     [Header("Difficulty")]
     public float scrollSpeed = 2f;
-    public float obstacleSpawnInterlval = 1f;
+    public float obstacleSpawnInterval = 1f;
     public float maxGapSize = 3f;
     public float minGapSize = 2f;
 
@@ -42,20 +43,20 @@ public class SpawnObstacles : MonoBehaviour
 
     LevelConfig easySPattern = new LevelConfig
     {
-        levelTimer = 30,
-        scrollSpeed = 1f,
-        obstacleSpawnInterlval = 1f,
-        maxGapSize = 4,
+        levelTimer = 10,
+        scrollSpeed = 3f,
+        obstacleSpawnInterval = 1f,
+        maxGapSize = 7,
         levelPattern = LevelConfig.Pattern.SPattern,
         sPatternStartTopHeight = 0,
-        heightModulator = 1,
+        heightModulator = 3,
     };
 
     LevelConfig tightSPattern = new LevelConfig
     {
         levelTimer = 30,
         scrollSpeed = 2f,
-        obstacleSpawnInterlval = 0.5f,
+        obstacleSpawnInterval = 0.5f,
         maxGapSize = 3,
         levelPattern = LevelConfig.Pattern.SPattern,
         sPatternStartTopHeight = 0,
@@ -72,6 +73,8 @@ public class SpawnObstacles : MonoBehaviour
     private float screenHeight;
     private float screenWidth;
 
+    public GameObject enemyControllerObject;
+    private SpawnEnemies enemyController;
 
     void Start()
     {
@@ -79,8 +82,9 @@ public class SpawnObstacles : MonoBehaviour
         CalculateScreenBounds();
         //StartCoroutine(SpawnGatesRoutine());
         currentLevelConfig = customConfig;
-        StartCoroutine(LevelRoutine(currentLevelConfig));
+        //StartCoroutine(LevelRoutine(currentLevelConfig));
         //currentLevelConfig = easySPattern;
+        enemyController = enemyControllerObject.GetComponent<SpawnEnemies>();
     }
 
     public void ResetConfig()
@@ -108,10 +112,11 @@ public class SpawnObstacles : MonoBehaviour
 
         // Update time left
         currentLevelTimer -= Time.deltaTime;
-
-        UpdateTimerText timerText = GameObject.Find("TimerText").GetComponent<UpdateTimerText>();
-        if (timerText)
+        GameObject timerTextParent = GameObject.Find("TimerText");
+        
+        if (timerTextParent)
         {
+            UpdateTimerText timerText = timerTextParent.GetComponent<UpdateTimerText>();
             timerText.UpdateTime(currentLevelTimer);
         }
         
@@ -121,13 +126,16 @@ public class SpawnObstacles : MonoBehaviour
             StopAllCoroutines();
             if (currentLevelConfig.levelPattern == LevelConfig.Pattern.Pause)
             {
+                Debug.Log("End pause, start new");
                 currentLevelConfig = customConfig;
+                // Next level starting, increase difficulty
+                enemyController.SetMaxForceMultiplier(enemyController.GetMaxForceMultiplier() + 0.5f);
+                enemyController.SetMaxSpeedMultiplier(enemyController.GetMaxSpeedMultiplier() + 0.5f);
             } else
             {
                 float prevScrollSpeed = currentLevelConfig.scrollSpeed;
                 currentLevelConfig = pauseConfig;
                 pauseConfig.scrollSpeed = prevScrollSpeed;
-                
             }
             StartCoroutine(LevelRoutine(currentLevelConfig));
         }
@@ -145,8 +153,15 @@ public class SpawnObstacles : MonoBehaviour
     {
         float currentTopHeight = currentLevelConfig.sPatternStartTopHeight;
         currentLevelTimer = config.levelTimer;
+        bool firstLoop = true;
         while (true)
         {
+            if (firstLoop)
+            {
+                firstLoop = false;
+                yield return new WaitForSeconds(currentLevelConfig.obstacleSpawnInterval);
+            }
+
             if (config.levelPattern == LevelConfig.Pattern.Random)
             {
                 SpawnRandomGate();
@@ -158,7 +173,7 @@ public class SpawnObstacles : MonoBehaviour
             {
                 // Do nothing
             }
-            yield return new WaitForSeconds(currentLevelConfig.obstacleSpawnInterlval);
+            yield return new WaitForSeconds(currentLevelConfig.obstacleSpawnInterval);
             
         }
     }
@@ -242,8 +257,8 @@ public class SpawnObstacles : MonoBehaviour
     void SpawnRandomGate()
     {
         // Random gap size (max 1/2 screen height)
-        float gapSize = Random.Range(currentLevelConfig.minGapSize, currentLevelConfig.maxGapSize);
-        float topHeight = Random.Range(0.1f, screenHeight - gapSize - 0.1f);
+        float gapSize = UnityEngine.Random.Range(currentLevelConfig.minGapSize, currentLevelConfig.maxGapSize);
+        float topHeight = UnityEngine.Random.Range(0.1f, screenHeight - gapSize - 0.1f);
         CreateGate(gapSize, topHeight);
         
     }

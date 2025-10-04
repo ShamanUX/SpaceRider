@@ -20,8 +20,14 @@ public class SpaceShipMovement : MonoBehaviour
 
     void Start()
     {
+        // Apply physics material with no friction
+        PhysicsMaterial2D noFrictionMaterial = new PhysicsMaterial2D();
+        noFrictionMaterial.friction = 0f;
+        noFrictionMaterial.bounciness = 0.1f;
+
+        GetComponent<Collider2D>().sharedMaterial = noFrictionMaterial;
         rb = GetComponent<Rigidbody2D>();
-        rb.linearDamping = dragInSpace; // Small drag to prevent infinite movement
+        rb.linearDamping = dragInSpace;
     }
 
     void Update()

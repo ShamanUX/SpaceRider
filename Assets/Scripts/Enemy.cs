@@ -9,6 +9,7 @@ public class EnemyConfig
     [Header("Appearance")]
     public Color color = Color.red;
     public float size = 1f;
+    public int orderInSortingLayer = 9; 
 
     [Header("Movement")]
     public float moveSpeed = 3f;
@@ -44,7 +45,8 @@ public class Enemy : MonoBehaviour
     private bool targetIsClosestGap = false;
     private bool canSeePlayer = false;
 
-    private float ballWidth;
+    public SpawnEnemies enemyController;
+    
 
     // Constructor-like initialization method
     public void Initialize(EnemyConfig enemyConfig)
@@ -55,7 +57,9 @@ public class Enemy : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         InvokeRepeating(nameof(UpdateTarget), 0f, config.targetUpdateRate);
         InvokeRepeating(nameof(MoveTowardsTarget), 0f, config.moveRate);
-        ballWidth = GetComponent<Collider2D>().bounds.size.x;
+        enemyController = FindFirstObjectByType<SpawnEnemies>();
+        
+    
     }
 
 
@@ -67,6 +71,8 @@ public class Enemy : MonoBehaviour
         {
             spriteRenderer.color = config.color;
             transform.localScale = Vector3.one * config.size;
+            spriteRenderer.sortingLayerName ="Enemy";
+            spriteRenderer.sortingOrder = config.orderInSortingLayer;
         }
 
         // Apply physics properties
@@ -168,7 +174,7 @@ public class Enemy : MonoBehaviour
             return null;
         } else
         {
-            Debug.Log("Found closest next gap, pos: " + bestPosition);
+            //Debug.Log("Found closest next gap, pos: " + bestPosition);
             return bestPosition;
         }
     }  
@@ -249,33 +255,34 @@ public class Enemy : MonoBehaviour
     void MoveTowardsTarget()
     { 
         Vector2 direction = (currentTarget - (Vector2)transform.position).normalized;
-        float currentSpeed = canSeePlayer ? config.playerChaseSpeed : config.moveSpeed;
-        currentSpeed *= 2;
+        float maxSpeed = canSeePlayer ? config.playerChaseSpeed : config.moveSpeed;
+         
+        maxSpeed *= enemyController.GetMaxSpeedMultiplier();
+        float maxForce = config.maxForce * enemyController.GetMaxForceMultiplier();
 
         // Use AddForce for gradual acceleration
-        Vector2 desiredVelocity = direction * currentSpeed;
-        Vector2 force = (desiredVelocity - rb.linearVelocity) * config.moveForcePerTick * 5;
+        Vector2 desiredVelocity = direction * maxSpeed;
+        Vector2 force = (desiredVelocity - rb.linearVelocity) * config.moveForcePerTick * enemyController.GetMaxForceMultiplier();
 
         // Limit maximum force to prevent overshooting
-        force = Vector2.ClampMagnitude(force, config.maxForce * 2);
+        force = Vector2.ClampMagnitude(force, maxForce);
 
         rb.AddForce(force);
 
         // Optional: Limit maximum velocity
-        if (rb.linearVelocity.magnitude > currentSpeed)
+        if (rb.linearVelocity.magnitude > maxSpeed)
         {
-            rb.linearVelocity = rb.linearVelocity.normalized * currentSpeed;
+            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
         }
 
         // Move towards closest gap vertically to ease navigation, if no player in sight
         Vector2? closestGap = FindNextGapPosition();
         if (closestGap.HasValue && !canSeePlayer) {
             Vector2 verticalDirection = (new Vector2(transform.position.x, closestGap.Value.y) - (Vector2)transform.position);
-            Vector2 desiredVerticalVelocity = verticalDirection * currentSpeed;
+            Vector2 desiredVerticalVelocity = verticalDirection * maxSpeed;
             Vector2 verticalForce = (desiredVerticalVelocity - new Vector2(0, rb.linearVelocityY)) * config.moveForcePerTick;
             verticalForce = Vector2.ClampMagnitude(verticalForce, config.maxForce);
 
-            Debug.Log("add vertical force: " + verticalForce);
             rb.AddForce(verticalForce);
         }     
     }
@@ -299,7 +306,7 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet"))
         {
             TakeKnockback(collision.gameObject.GetComponent<Rigidbody2D>().linearVelocity.normalized * 2);
-            TakeDamage(100);
+            TakeDamage(1);
             Destroy(collision.gameObject);
             
         }

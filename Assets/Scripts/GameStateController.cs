@@ -13,7 +13,7 @@ public class GameStateController : MonoBehaviour
     [SerializeField] private GameState _gameState = GameState.Title;
 
     public GameObject obstacleController;
-    public GameObject enemyController;
+    public GameObject enemyControllerObject;
 
     public GameObject titleUI;
     public GameObject inGameUI;
@@ -41,8 +41,7 @@ public class GameStateController : MonoBehaviour
             inGameUI.SetActive(true);
             gameOverUI.SetActive(false);
 
-            enemyController.SetActive(true);
-            obstacleController.SetActive(true);
+            enemyControllerObject.SetActive(true);
             ResetGame();
         } else if (value == GameState.GameOver)
         {
@@ -50,8 +49,8 @@ public class GameStateController : MonoBehaviour
             inGameUI.SetActive(false);
             gameOverUI.SetActive(true);
 
-            enemyController.SetActive(false);
-            obstacleController.SetActive(false);
+            enemyControllerObject.SetActive(false);
+            obstacleController.GetComponent<SpawnObstacles>().StopAllCoroutines();
         }
     }
 
@@ -87,7 +86,10 @@ public class GameStateController : MonoBehaviour
         }
         player.SetActive(true);
         player.transform.position = new Vector3(0, 0, player.transform.position.z);
-        enemyController.GetComponent<SpawnEnemies>().StartEnemySpawnRoutine();
+        SpawnEnemies enemyController = enemyControllerObject.GetComponent<SpawnEnemies>();
+        enemyController.SetMaxForceMultiplier(1);
+        enemyController.SetMaxSpeedMultiplier(1);
+        enemyController.StartEnemySpawnRoutine();
         obstacleController.GetComponent<SpawnObstacles>().ResetConfig();
     }
 }

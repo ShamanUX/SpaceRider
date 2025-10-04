@@ -38,7 +38,6 @@ public class AmmoGauge : MonoBehaviour
 
     public bool UseShot()
     {
-        Debug.Log("Use shot");
         if (currentShots >= 1)
         {
             currentShots--;

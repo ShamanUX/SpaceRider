@@ -232,6 +232,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -246,6 +247,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &35132258
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -554,6 +556,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -568,6 +571,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &83476472
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1088,6 +1092,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -1102,6 +1107,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &210742710
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1444,6 +1450,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -1458,6 +1465,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &274898924
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1960,6 +1968,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -1974,6 +1983,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &474268347
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2357,6 +2367,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -2371,6 +2382,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &494704102
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2542,6 +2554,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -2556,6 +2569,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &509748390
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3249,6 +3263,75 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &613974952
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 613974953}
+  - component: {fileID: 613974954}
+  m_Layer: 0
+  m_Name: Wall Collider Helper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &613974953
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613974952}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.125, y: 0.081, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066346528}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &613974954
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613974952}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.15048778, y: 0}
+  m_Size: {x: 1.402928, y: 1}
+  m_Direction: 0
 --- !u!1 &664249047
 GameObject:
   m_ObjectHideFlags: 0
@@ -3362,6 +3445,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -3376,6 +3460,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &664249052
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3903,6 +3988,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -3917,6 +4003,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &866302124
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4088,6 +4175,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -4102,6 +4190,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &882347315
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4307,6 +4396,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -4321,6 +4411,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &973419222
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9386,6 +9477,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -9400,6 +9492,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!1 &1019007656
 GameObject:
   m_ObjectHideFlags: 0
@@ -9578,6 +9671,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -9592,6 +9686,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &1042026327
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9763,6 +9858,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -9777,6 +9873,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &1062438431
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10136,7 +10233,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1220811783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10153,13 +10250,14 @@ MonoBehaviour:
   caveTile: {fileID: 21300192, guid: 894640e3f9d838a4499398609b715c7f, type: 3}
   customConfig:
     scrollSpeed: 3.05
-    obstacleSpawnInterlval: 0.88
+    obstacleSpawnInterval: 1
     maxGapSize: 7.13
     minGapSize: 2
     levelPattern: 1
     sPatternStartTopHeight: 0
     heightModulator: 3.08
-    levelTimer: 10
+    levelTimer: 3
+  enemyControllerObject: {fileID: 1710984027}
 --- !u!4 &1220811784
 Transform:
   m_ObjectHideFlags: 0
@@ -10169,7 +10267,7 @@ Transform:
   m_GameObject: {fileID: 1220811782}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.372256, y: -1.6908801, z: -0.029346421}
+  m_LocalPosition: {x: -12.372256, y: -1.6908801, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10574,7 +10672,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 90160e55efe08de4790a59a8fe25f716, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11094,6 +11192,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -11108,6 +11207,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &1416908098
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11245,7 +11345,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -2034827629
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1479808911
@@ -12115,6 +12215,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -12129,6 +12230,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &1646305841
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12390,6 +12492,8 @@ MonoBehaviour:
   enemySprite: {fileID: -2413806693520163455, guid: 2556530527a7f91419539793ab868e21, type: 3}
   spawnInterval: 1
   minDistanceToGate: 5
+  maxForceMultiplier: 1
+  maxSpeedMultiplier: 2
 --- !u!4 &1710984029
 Transform:
   m_ObjectHideFlags: 0
@@ -12518,6 +12622,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -12532,6 +12637,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &1732798742
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12616,7 +12722,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1734014347}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.28}
   m_LocalScale: {x: 9.905377, y: 9.905377, z: 9.905377}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13231,6 +13337,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -13245,6 +13352,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &1781492139
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -13418,7 +13526,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -19065,6 +19173,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -19079,6 +19188,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &1922236992
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -19463,7 +19573,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &2066346526
 MonoBehaviour:
@@ -19527,8 +19637,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1349634529
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -19556,6 +19666,7 @@ Transform:
   m_Children:
   - {fileID: 1339846213}
   - {fileID: 446845492}
+  - {fileID: 613974953}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!60 &2066346529
@@ -20117,6 +20228,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -20131,6 +20243,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &2105804118
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -20302,6 +20415,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -20316,6 +20430,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &2106847251
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -20584,7 +20699,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   _gameState: 1
   obstacleController: {fileID: 1220811782}
-  enemyController: {fileID: 1710984027}
+  enemyControllerObject: {fileID: 1710984027}
   titleUI: {fileID: 1738542577}
   inGameUI: {fileID: 2042654671}
   gameOverUI: {fileID: 2034681852}
@@ -20768,6 +20883,7 @@ MonoBehaviour:
   config:
     color: {r: 1, g: 0, b: 0, a: 1}
     size: 1
+    orderInSortingLayer: 9
     moveSpeed: 3
     playerChaseSpeed: 5
     drag: 0.5
@@ -20782,6 +20898,7 @@ MonoBehaviour:
     damage: 10
     attackRange: 2
     attackRate: 1
+  enemyController: {fileID: 0}
 --- !u!212 &2145255377
 SpriteRenderer:
   m_ObjectHideFlags: 0
