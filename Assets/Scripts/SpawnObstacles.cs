@@ -95,23 +95,12 @@ public class SpawnObstacles : MonoBehaviour
 
     void Update()
     {
-        // Move all obstacles left every frame
-        GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
-        foreach (GameObject obstacle in obstacles)
-        {
-            // Only apply to "Gate" obstacles
-            if (obstacle.name != "Gate") continue;
-            obstacle.transform.Translate(currentLevelConfig.scrollSpeed * Time.deltaTime * Vector3.left);
-
-            // Destroy obstacles that go off-screen to the left
-            if (obstacle.transform.position.x < -screenWidth * 1.5f)
-            {
-                Destroy(obstacle);
-            }
-        }
-
         // Update time left
-        currentLevelTimer -= Time.deltaTime;
+        if (GameObject.Find("GameStateController").GetComponent<GameStateController>().GetState() == GameStateController.GameState.Started)
+        {
+            currentLevelTimer -= Time.deltaTime;
+
+        }
         GameObject timerTextParent = GameObject.Find("TimerText");
         
         if (timerTextParent)
@@ -138,6 +127,24 @@ public class SpawnObstacles : MonoBehaviour
                 pauseConfig.scrollSpeed = prevScrollSpeed;
             }
             StartCoroutine(LevelRoutine(currentLevelConfig));
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        // Move all obstacles left every frame
+        GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+        foreach (GameObject obstacle in obstacles)
+        {
+            // Only apply to "Gate" obstacles
+            if (obstacle.name != "Gate") continue;
+            obstacle.transform.Translate(currentLevelConfig.scrollSpeed * Time.deltaTime * Vector3.left);
+
+            // Destroy obstacles that go off-screen to the left
+            if (obstacle.transform.position.x < -screenWidth * 1.5f)
+            {
+                Destroy(obstacle);
+            }
         }
     }
 

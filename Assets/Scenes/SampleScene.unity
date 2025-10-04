@@ -3610,6 +3610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e756c1f0b7947842b9b5248e4db8029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallSprite: {fileID: 7482667652216324306, guid: 6cf694dad2dca4c479d49ea0e9e8c44c, type: 3}
 --- !u!1 &783720632
 GameObject:
   m_ObjectHideFlags: 0

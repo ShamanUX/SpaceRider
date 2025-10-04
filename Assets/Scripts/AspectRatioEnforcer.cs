@@ -2,30 +2,31 @@ using UnityEngine;
 
 public class AspectRatioEnforcer : MonoBehaviour
 {
-    [Header("Target Aspect Ratio")]
-    public float targetAspectWidth = 16f;
-    public float targetAspectHeight = 9f;
+    [SerializeField] private float targetAspect = 16f / 9f; // 16:9 aspect ratio
 
     private Camera mainCamera;
-    private float targetAspectRatio;
 
     void Start()
     {
-        mainCamera = GetComponent<Camera>();
-        targetAspectRatio = targetAspectWidth / targetAspectHeight;
-        EnforceAspectRatio();
+        mainCamera = Camera.main;
+        ForceAspect();
     }
 
-    void EnforceAspectRatio()
+    void Update()
     {
-        // Calculate current aspect ratio
-        float currentAspectRatio = (float)Screen.width / Screen.height;
+        // Optional: continuously check for aspect ratio changes
+        if (Application.isEditor)
+        {
+            ForceAspect();
+        }
+    }
 
-        // Calculate the ratio between target and current aspect ratios
-        float scaleHeight = currentAspectRatio / targetAspectRatio;
+    void ForceAspect()
+    {
+        float currentAspect = (float)Screen.width / Screen.height;
+        float scaleHeight = currentAspect / targetAspect;
 
-        // Create a rect for the camera viewport
-        Rect rect = new Rect(0, 0, 1, 1);
+        Rect rect = mainCamera.rect;
 
         if (scaleHeight < 1.0f)
         {
@@ -46,15 +47,5 @@ public class AspectRatioEnforcer : MonoBehaviour
         }
 
         mainCamera.rect = rect;
-    }
-
-    void Update()
-    {
-        // Re-enforce aspect ratio if screen size changes (optional)
-        if (Screen.width != Screen.currentResolution.width ||
-            Screen.height != Screen.currentResolution.height)
-        {
-            EnforceAspectRatio();
-        }
     }
 }
