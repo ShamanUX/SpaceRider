@@ -15,7 +15,8 @@ public class LevelConfig
     [Header("Difficulty")]
     public float scrollSpeed = 2f;
     public float obstacleSpawnInterlval = 1f;
-    public float maxGapSize = 2f;
+    public float maxGapSize = 3f;
+    public float minGapSize = 2f;
 
     [Header("Pattern")]
     public Pattern levelPattern = Pattern.SPattern;
@@ -82,6 +83,12 @@ public class SpawnObstacles : MonoBehaviour
         //currentLevelConfig = easySPattern;
     }
 
+    public void ResetConfig()
+    {
+        currentLevelConfig = customConfig;
+        StartCoroutine(LevelRoutine(currentLevelConfig));
+    }
+
     void Update()
     {
         // Move all obstacles left every frame
@@ -101,18 +108,26 @@ public class SpawnObstacles : MonoBehaviour
 
         // Update time left
         currentLevelTimer -= Time.deltaTime;
+
+        UpdateTimerText timerText = GameObject.Find("TimerText").GetComponent<UpdateTimerText>();
+        if (timerText)
+        {
+            timerText.UpdateTime(currentLevelTimer);
+        }
         
-        GameObject.Find("TimerText").GetComponent<UpdateTimerText>().UpdateTime(currentLevelTimer);
 
         if (currentLevelTimer < 0)
         {
             StopAllCoroutines();
             if (currentLevelConfig.levelPattern == LevelConfig.Pattern.Pause)
             {
-                currentLevelConfig = easySPattern;
+                currentLevelConfig = customConfig;
             } else
             {
+                float prevScrollSpeed = currentLevelConfig.scrollSpeed;
                 currentLevelConfig = pauseConfig;
+                pauseConfig.scrollSpeed = prevScrollSpeed;
+                
             }
             StartCoroutine(LevelRoutine(currentLevelConfig));
         }
@@ -227,9 +242,10 @@ public class SpawnObstacles : MonoBehaviour
     void SpawnRandomGate()
     {
         // Random gap size (max 1/2 screen height)
-        float gapSize = Random.Range(screenHeight/10, screenHeight/4);
+        float gapSize = Random.Range(currentLevelConfig.minGapSize, currentLevelConfig.maxGapSize);
         float topHeight = Random.Range(0.1f, screenHeight - gapSize - 0.1f);
         CreateGate(gapSize, topHeight);
+        
     }
 
     GameObject CreateRectangle(string name, Color color, string tag)

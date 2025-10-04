@@ -8,6 +8,8 @@ public class SpawnEnemies : MonoBehaviour
     public Sprite enemySprite;
 
     public int spawnInterval = 5;
+
+    public float minDistanceToGate = 5;
     private enum EnemyType
     {
         Basic,
@@ -22,7 +24,53 @@ public class SpawnEnemies : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+    }
+
+    public void StartEnemySpawnRoutine()
+    {
+        StartCoroutine(SpawnEnemy());
+    }
+
+    Vector2 DetermineSpawnLocation()
+    {
+
+        GameObject[] gateGaps = GameObject.FindGameObjectsWithTag("Gap");
+        Vector2 bestPosition = transform.position; // Default to current position
+        float distanceToNearestGate = -Mathf.Infinity;
+
+        if (!GameObject.FindGameObjectWithTag("Player"))
+        {
+            return bestPosition;
+        }
+
+        foreach (GameObject gap in gateGaps)
+        {
+            // Skip gates that are behind the spawner
+            float xDifference = gap.transform.position.x - transform.position.x;
+            if (xDifference < 0f) continue;
+
+            if (distanceToNearestGate == -Mathf.Infinity)
+            {
+                distanceToNearestGate = xDifference;
+                bestPosition = gap.transform.position;
+            }
+
+            if (xDifference < distanceToNearestGate)
+            {
+                distanceToNearestGate = xDifference;
+                bestPosition = gap.transform.position;
+                Debug.Log("Gap found, y: " + gap.transform.position.y);
+            }
+        }
+
+        if (distanceToNearestGate > 0 && distanceToNearestGate < minDistanceToGate)
+        {
+            //Debug.Log("BestPosition y :" + bestPosition.y);
+            return new Vector2(transform.position.x, bestPosition.y);
+        } else
+        {
+            return transform.position;
+        }  
     }
 
     IEnumerator SpawnEnemy()
@@ -41,7 +89,7 @@ public class SpawnEnemies : MonoBehaviour
                     size = 0.7f,
                     moveSpeed = 3f,
                     playerChaseSpeed = 5f,
-                    sightDistance = 10f,
+                    sightDistance = 30f,
                     health = 4
                 };
             } else if (randomNumber <= 9)
@@ -53,7 +101,7 @@ public class SpawnEnemies : MonoBehaviour
                     size = 1f,
                     moveSpeed = 3f,
                     playerChaseSpeed = 4f,
-                    sightDistance = 10f,
+                    sightDistance = 30f,
                     health = 8
                 };
             } else
@@ -64,7 +112,7 @@ public class SpawnEnemies : MonoBehaviour
                     size = 0.5f,
                     moveSpeed = 5f,
                     playerChaseSpeed = 7f,
-                    sightDistance = 10f,
+                    sightDistance = 30f,
                     health = 2,
                     color = Color.red,
                 };
@@ -87,10 +135,10 @@ public class SpawnEnemies : MonoBehaviour
             Enemy enemy = enemyObj.AddComponent<Enemy>();
             enemy.Initialize(config);
 
-            enemyObj.transform.position = transform.position;
+            enemyObj.transform.position = DetermineSpawnLocation();
             enemyObj.transform.localScale = Vector3.one * config.size;
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(spawnInterval);
         }
     }
 }

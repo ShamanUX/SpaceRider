@@ -1,8 +1,7 @@
-Damage?
 Lava geyser?
-Different Levels (Shapes, Random, no obstacles - only enemies)
 Boss?
-Better looking obstacle (randomize sprites?)
+Better looking obstacle (glowing stuff)
 Items (mine, nuke)
 Thrust animation
 
+Vihut ei saa clippailla seinän läpi

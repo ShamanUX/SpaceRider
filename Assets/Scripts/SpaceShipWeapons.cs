@@ -18,7 +18,7 @@ public class SpaceShipWeapons : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ammoGauge = GameObject.FindObjectOfType<AmmoGauge>();
+        ammoGauge = FindAnyObjectByType<AmmoGauge>();
     }
 
     // Update is called once per frame

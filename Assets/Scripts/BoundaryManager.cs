@@ -5,6 +5,9 @@ public class BoundaryManager : MonoBehaviour
     private Camera mainCamera;
     private GameObject[] boundaryWalls = new GameObject[4];
 
+    private float screenWidth;
+    private float screenHeight;
+
     void Start()
     {
         mainCamera = Camera.main;
@@ -38,26 +41,49 @@ public class BoundaryManager : MonoBehaviour
             new Vector2(wallThickness, screenSize.y + wallThickness * 2));
     }
 
+    private class Wall : MonoBehaviour
+    {
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            bool playerCollision = collision.gameObject.CompareTag("Player");
+            if (playerCollision)
+            {
+                collision.gameObject.SetActive(false);
+                GameObject.FindAnyObjectByType<GameStateController>().SetState(GameStateController.GameState.GameOver);
+            } else if (collision.gameObject.CompareTag("Enemy"))
+            {
+                collision.gameObject.GetComponent<Enemy>().TakeDamage(1000);
+            } else if (collision.gameObject.CompareTag("Bullet"))
+            {
+                Destroy(collision.gameObject);
+            }
+        
+
+        }
+    }
+
     GameObject CreateWall(string wallName, Vector2 position, Vector2 size)
     {
         GameObject wall = new GameObject(wallName);
+        wall.AddComponent<Wall>();
         wall.transform.parent = transform;
         wall.transform.position = position;
 
         BoxCollider2D wallCollider = wall.AddComponent<BoxCollider2D>();
         wallCollider.size = size;
         // DISABLED TRIGGER OF WALL
-        // wallCollider.isTrigger = true;
+        //wallCollider.isTrigger = true;
 
         return wall;
     }
+
 
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             Debug.Log("Wrap object");
-            WrapObject(other.transform);
+            //WrapObject(other.transform);
         }
         else if (other.CompareTag("Bullet"))
         {
@@ -92,9 +118,11 @@ public class BoundaryManager : MonoBehaviour
 
     void Update()
     {
+        screenWidth = Screen.width;
+        screenHeight = Screen.height;
         // Re-enforce aspect ratio if screen size changes (optional)
-        if (Screen.width != Screen.currentResolution.width ||
-            Screen.height != Screen.currentResolution.height)
+        if (Screen.width != screenWidth ||
+            Screen.height != screenHeight)
         {
             CreateFourWalls();
         }

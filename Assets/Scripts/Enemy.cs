@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 // Configuration class to hold enemy properties
 [System.Serializable]
@@ -19,11 +20,10 @@ public class EnemyConfig
     [Header("Movement Physics")]
     public float moveRate = 0.2f;
     public float moveForcePerTick = 10f;
-    public float maxForce = 20f;
+    public float maxForce = 30f;
 
     [Header("AI Behavior")]
-    public float sightDistance = 8f;
-    public float playerDetectionAngle = 90f;
+    public float sightDistance = 30f;
     public float targetUpdateRate = 0.3f;
 
     [Header("Combat")]
@@ -41,6 +41,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     private Transform player;
     private Vector2 currentTarget;
+    private bool targetIsClosestGap = false;
     private bool canSeePlayer = false;
 
     private float ballWidth;
@@ -71,7 +72,7 @@ public class Enemy : MonoBehaviour
         // Apply physics properties
         if (rb != null)
         {
-            rb.drag = config.drag;
+            rb.linearDamping = config.drag;
             rb.mass = config.mass;
             rb.gravityScale = config.gravityScale;
         }
@@ -80,6 +81,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         CheckPlayerLineOfSight();
+        //BreakIfMovingToWrongDirection();
     }
 
     void CheckPlayerLineOfSight()
@@ -105,6 +107,30 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    void BreakIfMovingToWrongDirection()
+    {
+        if (rb.linearVelocity.magnitude < 0.1f) return;
+
+        Vector2 dirToTarget = (currentTarget - (Vector2)transform.position).normalized;
+        Vector2 velocityDir = rb.linearVelocity.normalized;
+
+        float angle = Vector2.Angle(velocityDir, dirToTarget);
+        Debug.Log("Angle to target: " + angle);
+
+        // Apply progressive drag based on how wrong the direction is
+        if (angle > 30f || angle < -30f)
+        {
+            // More drag the worse the angle
+            float dragFactor = Mathf.Clamp(Mathf.Abs(angle / 90f), config.drag, 3f);
+            rb.linearDamping = dragFactor;
+            Debug.Log("Applying drag: " + dragFactor);
+        }
+        else
+        {
+            rb.linearDamping = config.drag; // Base drag
+        }
+    }
+
     void UpdateTarget()
     {
         if (canSeePlayer) return; // Already targeting player
@@ -113,12 +139,52 @@ public class Enemy : MonoBehaviour
         currentTarget = FindSafestGatePosition();
     }
 
+    Vector2? FindNextGapPosition()
+    {
+        GameObject[] gateGaps = GameObject.FindGameObjectsWithTag("Gap");
+        float distanceToNearestGate = -Mathf.Infinity;
+        Vector2 bestPosition = transform.position;
+        foreach (GameObject gap in gateGaps)
+        {
+            // Skip gates that are behind the spawner
+            float xDifference = gap.transform.position.x - transform.position.x;
+            if (xDifference < 0f) continue;
+
+            if (distanceToNearestGate == -Mathf.Infinity)
+            {
+                distanceToNearestGate = xDifference;
+                bestPosition = gap.transform.position;
+            }
+
+            if (xDifference < distanceToNearestGate)
+            {
+                distanceToNearestGate = xDifference;
+                bestPosition = gap.transform.position;
+                Debug.Log("Gap found, y: " + gap.transform.position.y);
+            }
+        }
+        if (bestPosition == (Vector2)transform.position)
+        {
+            return null;
+        } else
+        {
+            Debug.Log("Found closest next gap, pos: " + bestPosition);
+            return bestPosition;
+        }
+    }  
+
     Vector2 FindSafestGatePosition()
     {
         GameObject[] gateGaps = GameObject.FindGameObjectsWithTag("Gap");
         Vector2 bestPosition = transform.position; // Default to current position
         float bestDistance = -Mathf.Infinity;
         float bestHorizontalDistance = -Mathf.Infinity;
+        targetIsClosestGap = false;
+
+        if (!GameObject.FindGameObjectWithTag("Player"))
+        {
+            return bestPosition;
+        }
 
         bool playerIsInFront = GameObject.FindGameObjectWithTag("Player").transform.position.x > transform.position.x ;
 
@@ -165,9 +231,10 @@ public class Enemy : MonoBehaviour
 
                 if (xDifference <= bestHorizontalDistance && distanceToGate <= bestDistance)
                 {
-                    Debug.Log("Fallback to closest gap");
+                    //Debug.Log("Fallback to closest gap");
                     bestPosition = gap.transform.position;
                     bestHorizontalDistance = xDifference;
+                    targetIsClosestGap = true;
                 }
             }
         }
@@ -180,24 +247,37 @@ public class Enemy : MonoBehaviour
     }
 
     void MoveTowardsTarget()
-    {
+    { 
         Vector2 direction = (currentTarget - (Vector2)transform.position).normalized;
         float currentSpeed = canSeePlayer ? config.playerChaseSpeed : config.moveSpeed;
+        currentSpeed *= 2;
 
         // Use AddForce for gradual acceleration
         Vector2 desiredVelocity = direction * currentSpeed;
-        Vector2 force = (desiredVelocity - rb.velocity) * config.moveForcePerTick;
+        Vector2 force = (desiredVelocity - rb.linearVelocity) * config.moveForcePerTick * 5;
 
         // Limit maximum force to prevent overshooting
-        force = Vector2.ClampMagnitude(force, config.maxForce);
+        force = Vector2.ClampMagnitude(force, config.maxForce * 2);
 
         rb.AddForce(force);
 
         // Optional: Limit maximum velocity
-        if (rb.velocity.magnitude > currentSpeed)
+        if (rb.linearVelocity.magnitude > currentSpeed)
         {
-            rb.velocity = rb.velocity.normalized * currentSpeed;
+            rb.linearVelocity = rb.linearVelocity.normalized * currentSpeed;
         }
+
+        // Move towards closest gap vertically to ease navigation, if no player in sight
+        Vector2? closestGap = FindNextGapPosition();
+        if (closestGap.HasValue && !canSeePlayer) {
+            Vector2 verticalDirection = (new Vector2(transform.position.x, closestGap.Value.y) - (Vector2)transform.position);
+            Vector2 desiredVerticalVelocity = verticalDirection * currentSpeed;
+            Vector2 verticalForce = (desiredVerticalVelocity - new Vector2(0, rb.linearVelocityY)) * config.moveForcePerTick;
+            verticalForce = Vector2.ClampMagnitude(verticalForce, config.maxForce);
+
+            Debug.Log("add vertical force: " + verticalForce);
+            rb.AddForce(verticalForce);
+        }     
     }
 
     void OnDrawGizmos()
@@ -218,8 +298,8 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            TakeKnockback(collision.gameObject.GetComponent<Rigidbody2D>().velocity.normalized * 2);
-            TakeDamage(1);
+            TakeKnockback(collision.gameObject.GetComponent<Rigidbody2D>().linearVelocity.normalized * 2);
+            TakeDamage(100);
             Destroy(collision.gameObject);
             
         }
@@ -235,7 +315,6 @@ public class Enemy : MonoBehaviour
         {
             // Apply knockback force (adjust by resistance)
             rb.AddForce((1f / knockbackResistance) * resistanceMultiplier * force, ForceMode2D.Impulse);
-
         }
     }
 
@@ -244,6 +323,13 @@ public class Enemy : MonoBehaviour
         config.health -= amount;
         if (config.health <= 0)
         {
+            ParticleSystem damageParticles = GameObject.Find("EnemyDamage").GetComponent<ParticleSystem>();
+            damageParticles.transform.position = transform.position;
+            var main = damageParticles.main;
+
+            main.startColor = gameObject.GetComponent<SpriteRenderer>().color;
+            damageParticles.Play();
+
             Destroy(gameObject);
         }
     }

@@ -16,10 +16,12 @@ public class SpaceShipMovement : MonoBehaviour
     private Rigidbody2D rb;
     private bool isThrusting = false;
 
+    public GameObject afterBurner;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.drag = dragInSpace; // Small drag to prevent infinite movement
+        rb.linearDamping = dragInSpace; // Small drag to prevent infinite movement
     }
 
     void Update()
@@ -50,17 +52,22 @@ public class SpaceShipMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        
         if (isThrusting)
         {
+            afterBurner.SetActive(true);
             // Apply thrust in the direction the ship is facing
             Vector2 thrustDirection = transform.up; // In 2D, up is the forward direction
             rb.AddForce(thrustDirection * thrustForce, ForceMode2D.Force);
 
             // Limit maximum velocity
-            if (rb.velocity.magnitude > maxVelocity)
+            if (rb.linearVelocity.magnitude > maxVelocity)
             {
-                rb.velocity = rb.velocity.normalized * maxVelocity;
+                rb.linearVelocity = rb.linearVelocity.normalized * maxVelocity;
             }
+        } else
+        {
+            afterBurner.SetActive(false);
         }
     }
 
