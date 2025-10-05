@@ -28,6 +28,7 @@ public class LevelConfig
 
     [Header("")]
     public float levelTimer;
+
 }
 
 public class SpawnObstacles : MonoBehaviour
@@ -74,6 +75,7 @@ public class SpawnObstacles : MonoBehaviour
     private float screenWidth;
 
     public GameObject enemyControllerObject;
+    public GameObject levelInfoGameObject;
     private SpawnEnemies enemyController;
 
     void Start()
@@ -166,20 +168,37 @@ public class SpawnObstacles : MonoBehaviour
             if (firstLoop)
             {
                 firstLoop = false;
-                yield return new WaitForSeconds(currentLevelConfig.obstacleSpawnInterval);
+                Debug.Log("First loop of level routine");
+                if (config.levelPattern != LevelConfig.Pattern.Pause)
+                {
+                    int levelNumber = FindFirstObjectByType<GameStateController>().GetLevelNumber();
+                    Debug.Log("LevelNumber: " + levelNumber);
+                    levelInfoGameObject.GetComponent<ShowLevelInfo>().ShowLevelNumber(FindFirstObjectByType<GameStateController>().levelNumber);
+                } else
+                {
+                    Debug.Log("Increase level number");
+                    FindAnyObjectByType<GameStateController>().levelNumber += 1;
+
+                }
+            } else
+            {
+                if (config.levelPattern == LevelConfig.Pattern.Random)
+                {
+
+                    SpawnRandomGate();
+                }
+                else if (config.levelPattern == LevelConfig.Pattern.SPattern)
+                {
+                    CreateGate(currentLevelConfig.maxGapSize, currentTopHeight);
+                    currentTopHeight = TopHeightAdjustment(currentTopHeight);
+                }
+                else if (config.levelPattern == LevelConfig.Pattern.Pause)
+                {
+
+                }
+
             }
 
-            if (config.levelPattern == LevelConfig.Pattern.Random)
-            {
-                SpawnRandomGate();
-            } else if (config.levelPattern == LevelConfig.Pattern.SPattern)
-            {
-                CreateGate(currentLevelConfig.maxGapSize, currentTopHeight);
-                currentTopHeight = TopHeightAdjustment(currentTopHeight);
-            } else if (config.levelPattern == LevelConfig.Pattern.Pause)
-            {
-                // Do nothing
-            }
             yield return new WaitForSeconds(currentLevelConfig.obstacleSpawnInterval);
             
         }

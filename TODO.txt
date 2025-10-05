@@ -2,6 +2,7 @@ Lava geyser?
 Boss?
 Better looking obstacle (glowing stuff)
 Items (mine, nuke)
-Thrust animation
 
-Vihut ei saa clippailla seinän läpi
+Seinät hienommiksi
+
+Level text ei näy jostain syystä

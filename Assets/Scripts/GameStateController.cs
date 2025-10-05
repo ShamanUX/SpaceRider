@@ -20,11 +20,22 @@ public class GameStateController : MonoBehaviour
     public GameObject gameOverUI;
 
     public GameObject player;
+    public int levelNumber = 1;
 
+    public int GetLevelNumber()
+    {
+        return levelNumber;
+    }
+
+    public void SetLevelNumber(int levelNumber)
+    {
+        this.levelNumber = levelNumber;
+    }
     public GameState GetState()
     {
         return _gameState;
     }
+
 
     public void SetState(GameState value)
     {
@@ -84,6 +95,7 @@ public class GameStateController : MonoBehaviour
                 Destroy(obstacle);
             }
         }
+        SetLevelNumber(1);
         player.SetActive(true);
         player.transform.position = new Vector3(0, 0, player.transform.position.z);
         SpawnEnemies enemyController = enemyControllerObject.GetComponent<SpawnEnemies>();
