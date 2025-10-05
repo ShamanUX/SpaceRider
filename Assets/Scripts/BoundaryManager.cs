@@ -75,7 +75,11 @@ public class BoundaryManager : MonoBehaviour
         SpriteRenderer sr;
         sr = wall.AddComponent<SpriteRenderer>();
         sr.sprite = wallSprite;
-        sr.color = Color.orangeRed;
+
+        Color wallColor = Color.orangeRed;
+        wallColor.a = 0;
+        sr.color = wallColor;
+        
 
         wall.AddComponent<ProximityOpacity>();
 

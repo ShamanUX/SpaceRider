@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class GameStateController : MonoBehaviour
@@ -60,6 +61,7 @@ public class GameStateController : MonoBehaviour
             inGameUI.SetActive(false);
             gameOverUI.SetActive(true);
 
+            GameObject.Find("LevelReached").GetComponent<TextMeshPro>().text = $"You reached Level {levelNumber}";
             enemyControllerObject.SetActive(false);
             obstacleController.GetComponent<SpawnObstacles>().StopAllCoroutines();
         }
@@ -75,7 +77,7 @@ public class GameStateController : MonoBehaviour
     void Update()
     {
 
-        if ((GetState() == GameState.Title || GetState()  == GameState.GameOver) && Input.GetKeyDown(KeyCode.KeypadEnter))
+        if ((GetState() == GameState.Title || GetState()  == GameState.GameOver) && Input.GetKeyDown(KeyCode.Return))
         {
             SetState(GameState.Started);
             

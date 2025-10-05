@@ -82,6 +82,9 @@ public class ProximityOpacity : MonoBehaviour
 
     float CalculateTargetOpacity(float distance)
     {
+        if (FindFirstObjectByType<GameStateController>().GetState() != GameStateController.GameState.Started){
+            return minOpacity;
+        }
         // Clamp distance between min and max range
         distance = Mathf.Clamp(distance, minDistance, maxDistance);
 

@@ -11,6 +11,14 @@ public class AudioManager : MonoBehaviour
         audioSource.Play();
     }
 
+    public void PlayAudio(string audioObjectName, float pitch)
+    {
+        AudioSource audioSource = transform.Find(audioObjectName).GetComponent<AudioSource>();
+        audioSource.pitch = pitch;
+        audioSource.Stop();
+        audioSource.Play();
+    }
+
     public void StopAudio(string audioObjectName)
     {
         transform.Find(audioObjectName).GetComponent<AudioSource>().Stop();

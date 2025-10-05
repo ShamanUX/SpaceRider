@@ -124,8 +124,8 @@ public class SpawnObstacles : MonoBehaviour
                 Debug.Log("End pause, start new");
                 currentLevelConfig = customConfig;
                 // Next level starting, increase difficulty
-                enemyController.SetMaxForceMultiplier(enemyController.GetMaxForceMultiplier() + 0.5f);
-                enemyController.SetMaxSpeedMultiplier(enemyController.GetMaxSpeedMultiplier() + 0.5f);
+                enemyController.SetMaxForceMultiplier(enemyController.GetMaxForceMultiplier() + 0.3f);
+                enemyController.SetMaxSpeedMultiplier(enemyController.GetMaxSpeedMultiplier() + 0.3f);
             } else
             {
                 float prevScrollSpeed = currentLevelConfig.scrollSpeed;

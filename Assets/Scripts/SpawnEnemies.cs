@@ -22,7 +22,6 @@ public class SpawnEnemies : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(SpawnEnemy());
     }
 
     // Update is called once per frame
@@ -42,7 +41,7 @@ public class SpawnEnemies : MonoBehaviour
 
     public float GetMaxForceMultiplier()
     {
-        return maxSpeedMultiplier;
+        return maxForceMultiplier;
     }
 
     public void SetMaxForceMultiplier(float multiplier)
@@ -92,7 +91,9 @@ public class SpawnEnemies : MonoBehaviour
             return new Vector2(transform.position.x, bestPosition.y);
         } else
         {
-            return transform.position;
+            // Randomize y position
+
+            return new Vector3(transform.position.x, Random.Range(-3f, 3f));
         }  
     }
 
