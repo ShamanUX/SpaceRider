@@ -58,9 +58,12 @@ public class SpaceShipMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+
+        AudioManager am = FindFirstObjectByType<AudioManager>();
         
         if (isThrusting)
         {
+            am.PlayAudioLoop("Thrust");
             afterBurner.SetActive(true);
             // Apply thrust in the direction the ship is facing
             Vector2 thrustDirection = transform.up; // In 2D, up is the forward direction
@@ -74,6 +77,7 @@ public class SpaceShipMovement : MonoBehaviour
         } else
         {
             afterBurner.SetActive(false);
+            am.StopAudio("Thrust");
         }
     }
 

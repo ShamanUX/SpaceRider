@@ -338,6 +338,7 @@ public class Enemy : MonoBehaviour
             damageParticles.Play();
 
             Destroy(gameObject);
+            FindFirstObjectByType<AudioManager>().PlayAudio("EnemyDeath");
         }
     }
 

@@ -383,6 +383,7 @@ public class SpawnObstacles : MonoBehaviour
                 if (colliderIsPlayer)
                 {
                     forceMagnitude = 3f;
+                    FindFirstObjectByType<AudioManager>().PlayAudio("ObstacleHit");
                 }
                 rb.AddForce(forceDirection * forceMagnitude, ForceMode2D.Impulse);
             }

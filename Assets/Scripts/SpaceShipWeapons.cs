@@ -71,6 +71,8 @@ public class SpaceShipWeapons : MonoBehaviour
         rb.gravityScale = 0;
         bullet.transform.position = this.gameObject.transform.position + this.gameObject.transform.up * 0.8f;
 
+        FindFirstObjectByType<AudioManager>().PlayAudio("Shot");
+
         // Optional: Ignore collision with player
         Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());
     }
