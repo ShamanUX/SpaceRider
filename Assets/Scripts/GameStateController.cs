@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class GameStateController : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class GameStateController : MonoBehaviour
     public GameObject player;
     public int levelNumber = 1;
 
+    public AudioMixerGroup musicAudioGroup;
+
     public int GetLevelNumber()
     {
         return levelNumber;
@@ -37,6 +40,18 @@ public class GameStateController : MonoBehaviour
         return _gameState;
     }
 
+    private void filterMenuMusic(bool state)
+    {
+        if (state)
+        {
+            musicAudioGroup.audioMixer.SetFloat("LPFreq", 5340);
+            musicAudioGroup.audioMixer.SetFloat("HPFreq", 1300);
+        } else
+        {
+            musicAudioGroup.audioMixer.SetFloat("HPFreq", 0);
+            musicAudioGroup.audioMixer.SetFloat("LPFreq", 22000);
+        }
+    }
 
     public void SetState(GameState value)
     {
@@ -46,6 +61,7 @@ public class GameStateController : MonoBehaviour
             titleUI.SetActive(true);
             inGameUI.SetActive(false);
             gameOverUI.SetActive(false);
+            filterMenuMusic(true);
 
         } else if (value == GameState.Started)
         {
@@ -55,6 +71,7 @@ public class GameStateController : MonoBehaviour
 
             enemyControllerObject.SetActive(true);
             ResetGame();
+            filterMenuMusic(false);
         } else if (value == GameState.GameOver)
         {
             titleUI.SetActive(false);
@@ -64,6 +81,7 @@ public class GameStateController : MonoBehaviour
             GameObject.Find("LevelReached").GetComponent<TextMeshPro>().text = $"You reached Level {levelNumber}";
             enemyControllerObject.SetActive(false);
             obstacleController.GetComponent<SpawnObstacles>().StopAllCoroutines();
+            filterMenuMusic(true);
         }
     }
 

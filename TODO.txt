@@ -1,8 +1,9 @@
 Lava geyser?
 Boss?
-Better looking obstacle (glowing stuff)
-Items (mine, nuke)
+Items (mine, nuke) ?
 
-Seinät hienommiksi
+Fix thrust sound
 
-Level text ei näy jostain syystä
+Sound options
+
+
