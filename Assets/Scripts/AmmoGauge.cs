@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,11 @@ public class AmmoGauge : MonoBehaviour
     private bool isRegenerating;
 
     void Start()
+    {
+        RefillAmmoFully();
+    }
+
+    public void RefillAmmoFully()
     {
         currentShots = maxShots;
         UpdateGaugeUI();

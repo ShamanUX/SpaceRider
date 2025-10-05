@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.Rendering.Universal;
 
 
 [System.Serializable]
@@ -35,6 +36,8 @@ public class SpawnObstacles : MonoBehaviour
 {
     public Sprite rectangleSprite;
     public Sprite caveTile;
+
+    public Color gateColor;
 
     [Header("Level controls")]
     public LevelConfig customConfig = new LevelConfig();
@@ -76,6 +79,7 @@ public class SpawnObstacles : MonoBehaviour
 
     public GameObject enemyControllerObject;
     public GameObject levelInfoGameObject;
+    public GameObject gateTipPrefab;
     private SpawnEnemies enemyController;
 
     void Start()
@@ -243,29 +247,44 @@ public class SpawnObstacles : MonoBehaviour
         // Extend obstacle slightly over the camera view 
         float extensionAmount = 0;
 
+
         // Spawn top rectangle
-        GameObject topRect = CreateRectangle("TopGate", Color.red, "Obstacle");
+        GameObject topRect = CreateRectangle("TopGate", gateColor, "Obstacle");
         topRect.transform.parent = gate.transform;
         topRect.transform.localPosition = new Vector3(0, screenHeight / 2 - (topHeight / 2 - extensionAmount), 0);
         topRect.transform.localScale = new Vector3(0.5f, topHeight + extensionAmount, 1f);
         topRect.AddComponent<BoxCollider2D>();
         topRect.AddComponent<Obstacle>();
         topRect.layer = 6;
-        FillRectWithCaveBlocks(topRect, "top");
+        //FillRectWithCaveBlocks(topRect, "top");
 
+        // Spawn top rectangle tip
+        GameObject topGateTip = Instantiate(gateTipPrefab);
+        topGateTip.transform.parent = gate.transform;
+        topGateTip.transform.localPosition = new Vector3(0,screenHeight / 2 - topHeight - gateTipPrefab.transform.lossyScale.y / 2, 0);
+        topGateTip.transform.localScale = new Vector3(0.5f, topGateTip.transform.localScale.y, 1);
+        topGateTip.transform.Rotate(Vector3.forward, 180);
+        topGateTip.GetComponent<SpriteRenderer>().color = gateColor;
        
         // Spawn bottom rectangle
-        GameObject bottomRect = CreateRectangle("BottomGate", Color.red, "Obstacle");
+        GameObject bottomRect = CreateRectangle("BottomGate", gateColor, "Obstacle");
         bottomRect.transform.parent = gate.transform;
         bottomRect.transform.localPosition = new Vector3(0, -screenHeight / 2 + (bottomHeight / 2 - extensionAmount), 0);
         bottomRect.transform.localScale = new Vector3(0.5f, bottomHeight + extensionAmount, 1f);
         bottomRect.AddComponent<BoxCollider2D>();
         bottomRect.AddComponent<Obstacle>();
         bottomRect.layer = 6;
-        FillRectWithCaveBlocks(bottomRect, "bottom");
+        //FillRectWithCaveBlocks(bottomRect, "bottom");
+        // Spawn bottom rectangle tip
+        GameObject bottomGateTip = Instantiate(gateTipPrefab);
+        bottomGateTip.transform.parent = gate.transform;
+        bottomGateTip.transform.localPosition = new Vector3(0, -screenHeight / 2 + bottomHeight + gateTipPrefab.transform.lossyScale.y / 2, 0);
+        bottomGateTip.transform.localScale = new Vector3(0.5f, bottomGateTip.transform.localScale.y, 1);
+        bottomGateTip.GetComponent<SpriteRenderer>().color = gateColor;
+
 
         // Spawn gap area
-        GameObject gateGap = CreateRectangle("GateGap", Color.green, "Gap");
+        GameObject gateGap = CreateRectangle("GateGap", new Color(0,0,0,0), "Gap");
         gateGap.transform.parent = gate.transform;
         gateGap.transform.localPosition = new Vector3(0, screenHeight/2 - topHeight - gapSize / 2, 0);
         gateGap.transform.localScale = new Vector3(0.5f, gapSize + extensionAmount, 1f);
@@ -297,8 +316,8 @@ public class SpawnObstacles : MonoBehaviour
         // Add sprite renderer
         SpriteRenderer sr = rect.AddComponent<SpriteRenderer>();
         sr.sprite = rectangleSprite;
-        color.a = 0.5f;
-        sr.color = color; // Make obstacles visible
+
+        sr.color = color; 
 
         return rect;
     }

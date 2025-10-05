@@ -102,6 +102,9 @@ public class GameStateController : MonoBehaviour
         enemyController.SetMaxForceMultiplier(1);
         enemyController.SetMaxSpeedMultiplier(1);
         enemyController.StartEnemySpawnRoutine();
+
+        FindFirstObjectByType<AmmoGauge>().RefillAmmoFully(); 
+
         obstacleController.GetComponent<SpawnObstacles>().ResetConfig();
     }
 }
