@@ -54,6 +54,7 @@ public class BoundaryManager : MonoBehaviour
                 FindFirstObjectByType<AudioManager>().PlayAudio("Destruction");
                 collision.gameObject.SetActive(false);
                 GameObject.FindAnyObjectByType<GameStateController>().SetState(GameStateController.GameState.GameOver);
+                FindFirstObjectByType<AudioManager>().StopAudio("Thrust");
             } else if (collision.gameObject.CompareTag("Enemy"))
             {
                 collision.gameObject.GetComponent<Enemy>().TakeDamage(1000);

@@ -41,7 +41,7 @@ public class SpawnObstacles : MonoBehaviour
 
     [Header("Level controls")]
     public LevelConfig customConfig = new LevelConfig();
-    private LevelConfig currentLevelConfig = new LevelConfig();
+    [SerializeField] private LevelConfig currentLevelConfig = new LevelConfig();
     
     private float currentLevelTimer;
 
@@ -67,6 +67,17 @@ public class SpawnObstacles : MonoBehaviour
         heightModulator = 1,
     };
 
+    readonly LevelConfig startConfig = new LevelConfig
+    {
+        levelTimer = 10,
+        scrollSpeed = 3,
+        obstacleSpawnInterval = 1,
+        maxGapSize = 10,
+        minGapSize = 7,
+        levelPattern = LevelConfig.Pattern.Random,
+
+    };
+
     LevelConfig pauseConfig = new LevelConfig
     {
         levelTimer = 15,
@@ -81,13 +92,14 @@ public class SpawnObstacles : MonoBehaviour
     public GameObject levelInfoGameObject;
     public GameObject gateTipPrefab;
     private SpawnEnemies enemyController;
+    private LevelConfig lastConfig;
 
     void Start()
     {
         mainCamera = Camera.main;
         CalculateScreenBounds();
         //StartCoroutine(SpawnGatesRoutine());
-        currentLevelConfig = customConfig;
+        currentLevelConfig = startConfig;
         //StartCoroutine(LevelRoutine(currentLevelConfig));
         //currentLevelConfig = easySPattern;
         enemyController = enemyControllerObject.GetComponent<SpawnEnemies>();
@@ -95,7 +107,19 @@ public class SpawnObstacles : MonoBehaviour
 
     public void ResetConfig()
     {
-        currentLevelConfig = customConfig;
+        Debug.Log("Reset current level config");
+        Debug.Log("Prev maxgap" + currentLevelConfig.maxGapSize);
+        currentLevelConfig = new LevelConfig
+        {
+            levelTimer = startConfig.levelTimer,
+            scrollSpeed = startConfig.scrollSpeed,
+            obstacleSpawnInterval = startConfig.obstacleSpawnInterval,
+            maxGapSize = startConfig.maxGapSize,
+            minGapSize = startConfig.minGapSize,
+            levelPattern = startConfig.levelPattern,
+        };
+        Debug.Log("Next maxgap" + currentLevelConfig.maxGapSize);
+        Debug.Log("StartConfig maxgap" + startConfig.maxGapSize);
         StartCoroutine(LevelRoutine(currentLevelConfig));
     }
 
@@ -122,13 +146,17 @@ public class SpawnObstacles : MonoBehaviour
             if (currentLevelConfig.levelPattern == LevelConfig.Pattern.Pause)
             {
                 Debug.Log("End pause, start new");
-                currentLevelConfig = customConfig;
+
                 // Next level starting, increase difficulty
-                enemyController.SetMaxForceMultiplier(enemyController.GetMaxForceMultiplier() + 0.3f);
-                enemyController.SetMaxSpeedMultiplier(enemyController.GetMaxSpeedMultiplier() + 0.3f);
+                currentLevelConfig = lastConfig;
+                currentLevelConfig.maxGapSize = Math.Max(currentLevelConfig.maxGapSize - 0.3f, 6);
+                currentLevelConfig.minGapSize = Math.Max(currentLevelConfig.minGapSize - 0.3f, 3);
+                enemyController.SetMaxForceMultiplier(Math.Min(enemyController.GetMaxForceMultiplier() + 0.3f, 2.6f));
+                enemyController.SetMaxSpeedMultiplier(Math.Min(enemyController.GetMaxSpeedMultiplier() + 0.3f, 2.6f));
             } else
             {
                 float prevScrollSpeed = currentLevelConfig.scrollSpeed;
+                lastConfig = currentLevelConfig;
                 currentLevelConfig = pauseConfig;
                 pauseConfig.scrollSpeed = prevScrollSpeed;
             }

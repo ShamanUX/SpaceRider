@@ -44,12 +44,12 @@ public class GameStateController : MonoBehaviour
     {
         if (state)
         {
-            musicAudioGroup.audioMixer.SetFloat("LPFreq", 5340);
-            musicAudioGroup.audioMixer.SetFloat("HPFreq", 1300);
+            musicAudioGroup.audioMixer.SetFloat("MusicVolFiltered", -6f);
+            musicAudioGroup.audioMixer.SetFloat("MusicVolUnfiltered", -80);
         } else
         {
-            musicAudioGroup.audioMixer.SetFloat("HPFreq", 0);
-            musicAudioGroup.audioMixer.SetFloat("LPFreq", 22000);
+            musicAudioGroup.audioMixer.SetFloat("MusicVolFiltered", -80);
+            musicAudioGroup.audioMixer.SetFloat("MusicVolUnfiltered", -6);
         }
     }
 
